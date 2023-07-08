@@ -7,8 +7,6 @@
 #include <GL/glu.h>
 
 
-
-
 ref class OpenGL : public System::Windows::Forms::NativeWindow
 {
 private:
