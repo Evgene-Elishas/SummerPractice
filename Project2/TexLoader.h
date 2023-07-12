@@ -1,0 +1,49 @@
+#pragma once
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb\stb_image.h"
+/*#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb\stb_image_write.h"
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#include "stb\stb_image_resize.h"*/
+#include <windows.h>
+#include "GLFW\glfw3.h"
+#include <iostream>
+
+struct MyTexture {
+	GLuint texID;
+	GLint w, h;
+	GLenum format;
+
+	bool Load(char* filename) {
+		glGenTextures(1, &texID);
+		int nrComponents, is_loaded = FALSE;
+		unsigned char* data = stbi_load(filename, &w, &h, &nrComponents, 0);
+		if (data)
+		{
+			is_loaded = TRUE;
+			if (nrComponents == 1) format = GL_RED;
+			else if (nrComponents == 3)format = GL_RGB;
+			else if (nrComponents == 4)format = GL_RGBA;
+
+			glBindTexture(GL_TEXTURE_2D, texID);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexImage2D(GL_TEXTURE_2D, 0, format, w, h, 0, format, GL_UNSIGNED_BYTE, data);
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+		stbi_image_free(data);
+		return is_loaded;
+	}
+
+	void Bind() {
+		glBindTexture(GL_TEXTURE_2D, texID);
+	}
+
+	~MyTexture() {
+		glDeleteTextures(1, &texID);
+	}
+};

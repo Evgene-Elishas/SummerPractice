@@ -13,7 +13,8 @@ private:
 	HDC m_hDC;
 	HGLRC m_hglrc;
 public:
-	OpenGL(System::Windows::Forms::Form^ parentForm, GLsizei iWidth, GLsizei iHeight);
+	float yaw = 0.0f, pitch = 0.0f, distance = 2.5f;
+	OpenGL(System::Windows::Forms::Form^ parentForm, int iWidth, int iHeight);
 
 	System::Void Render(System::Void);
 	~OpenGL(System::Void);
