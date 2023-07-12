@@ -25,19 +25,11 @@ const float PERSPECTIVE  =  60.0f;
 class Camera
 {
 public:
-    // camera Attributes
-    glm::vec3 Position;
-    glm::vec3 Front;
-    glm::vec3 Up;
-    glm::vec3 Right;
-    glm::vec3 WorldUp;
+    glm::vec3 Position, Front, Up, Right, WorldUp;
     // euler Angles
-    float Yaw;
-    float Pitch;
+    float Yaw, Pitch;
     // camera options
-    float MovementSpeed;
-    float MouseSensitivity;
-    float Perspective;
+    float MovementSpeed, MouseSensitivity, Perspective;
 
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), 
         float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), 
@@ -57,7 +49,7 @@ public:
     }*/
 
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-    void ProcessKeyboard(Camera_Movement direction, float deltaTime)
+   /* void ProcessKeyboard(Camera_Movement direction, float deltaTime)
     {
         float velocity = MovementSpeed * deltaTime;
         switch (direction)
@@ -99,7 +91,7 @@ public:
         Perspective -= yoffset;
         if (Perspective < 20.0f)  Perspective = 20.0f;
         if (Perspective > 170.0f) Perspective = 170.0f;
-    }
+    }*/
 
 
     // calculates the front vector from the Camera's (updated) Euler Angles
@@ -119,4 +111,3 @@ public:
         Up    = glm::normalize(glm::cross(Right, Front));
     }
 };
-

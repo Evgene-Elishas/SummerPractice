@@ -1,8 +1,6 @@
 #pragma once
-
-#pragma once
 #include <windows.h>
-#include <Windowsx.h>
+//#include <Windowsx.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 
@@ -22,4 +20,3 @@ public:
 	bool InitGL(GLvoid);
 	GLvoid ReSizeGLScene(GLsizei width, GLsizei height);
 };
-

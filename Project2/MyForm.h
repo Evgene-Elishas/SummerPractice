@@ -1,8 +1,6 @@
 #pragma once
 #include "OpenGL.h"
 
-
-
 namespace Project2 {
 
 	using namespace System;
@@ -210,7 +208,6 @@ namespace Project2 {
 #pragma endregion
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
-
 	private: System::Void textBox2_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
@@ -219,12 +216,7 @@ private: System::Void textBox1_TextChanged(System::Object^ sender, System::Event
 private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-	//static bool qwerty = false;
-	//qwerty = !qwerty;
-	//if (!qwerty) pictureBox1->BackColor = System::Drawing::SystemColors::ActiveCaption;
-	//else pictureBox1->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
 	opengl->Render();
-
 }
 private: System::Void âñåãäàToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 }
@@ -233,11 +225,6 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 }
 private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
 }
-
-
-
-
-
 private: System::Void hScrollBar1_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
 	this->opengl->yaw = e->NewValue;
 }
@@ -247,7 +234,6 @@ private: System::Void hScrollBar2_Scroll(System::Object^ sender, System::Windows
 }
 private: System::Void hScrollBar3_Scroll_1(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
 	this->opengl->distance = int(e->NewValue) * 0.05;
-
 }
 };
 }

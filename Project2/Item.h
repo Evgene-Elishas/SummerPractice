@@ -4,20 +4,11 @@
 #include <vector>
 #include <fstream>
 #include <string>
-//#include <map>
 //#include <iostream>
 
 using namespace std;
 #include "glm/glm.hpp"
 #include "TexLoader.h"
-
-//inline GLuint min(GLuint a, GLuint b) { return a < b ? a : b; }
-//inline GLuint max(GLuint a, GLuint b) { return a > b ? a : b; }
-//inline GLuint MinMaxed(GLuint number, GLuint bottom, GLuint top) { return min(max(number, bottom), top); }
-//#define M_PI 3.1415926535
-//#define M_TWO_PI 6.28318530718
-//const GLuint MIN_PRECISION = 4;
-//const GLuint MAX_PRECISION = 0x7ff;
 
 /*enum Draw_Primitive
 {
@@ -30,8 +21,14 @@ enum Draw_Type
 {
 	Elements,
 	Arrays
-};*/
+};
 
+struct Vertex
+{
+	glm::vec3 position;
+	glm::vec2 texCoord;
+	glm::vec3 normal;
+};*/
 
 struct Mesh
 {
@@ -40,9 +37,7 @@ struct Mesh
 	vector<glm::vec2> texCoord;
 	//vector<GLuint> m_indicies;
 
-	void Load(string filename, string texname) {
-
-
+	void Load(string filename) {
 		vector<glm::vec3> pos;
 		vector<glm::vec3> norm;
 		vector<glm::vec2> tCoord;
@@ -87,38 +82,22 @@ struct Mesh
 		}
 		
 	}
-	//Draw_Primitive m_primitive = Draw_Primitive::Triangles;
-	//Draw_Type m_Draw_Type = Draw_Type::Elements;
-	// Очищает вершины и индексы, устанавливает тип примитива.
-	//void Clear(Draw_Primitive meshType);
 
-	// Рисует сетку примитивов, используя массивы индексов и вершин.
-	void Draw() {
+	void Draw() { // Рисует сетку примитивов, используя массивы и вершин.
 		if (position.size()) {
-
 			glEnableClientState(GL_VERTEX_ARRAY);
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-			// Выполняем привязку vertex array и normal array
 			glVertexPointer(3, GL_FLOAT, 0, position.data());
 			glNormalPointer(GL_FLOAT, 0, normal.data());
 			glTexCoordPointer(2, GL_FLOAT, 0, texCoord.data());
 
-			// Выполняем внешнюю функцию.
 			glDrawArrays(GL_TRIANGLES, 0, GLsizei(position.size()));
 
-			// Выключаем режим vertex array и normal array.
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 			glDisableClientState(GL_NORMAL_ARRAY);
 			glDisableClientState(GL_VERTEX_ARRAY);
 		}
-
-
-
 	}
 };
-
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////

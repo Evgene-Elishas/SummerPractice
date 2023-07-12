@@ -2,7 +2,7 @@
 using namespace System;
 using namespace System::Windows::Forms;
 
-[STAThread]
+//[STAThread]
 int main(array<System::String^>^ args)
 {
 	Application::EnableVisualStyles();

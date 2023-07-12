@@ -6,54 +6,55 @@
 #include <GL/glu.h>
 #include "OpenGL.h"
 
-
 #include "Item.h"
 #include "Camera.h"
-//#include "glaux.h"
 
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "gdi32.lib")
 #pragma comment(lib, "User32.lib")
-
-
 #pragma comment (lib,"opengl32.lib")
 
 using namespace System::Windows::Forms;
 int Width, Height;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.5f)); 
 MyTexture Sun, CellThor, Space;
-Mesh Wheel, Pipe1, Pipe2, Pipe3, PipeBend, Damper, Reductor, Shaft, Engine;
+Mesh Wheel, Pipe1, Pipe2, Pipe3, PipeBend, Damper, Reductor, Shaft, Shutter, Engine;
 Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, RegHinge, RegHingeDown, RegSphere;
-
-
-
 
 // инициализация OpenGL
 bool OpenGL::InitGL(GLvoid)
 {
-
 	Sun.Load("WheelWagon.jpg");
 	Space.Load("Centr.png");
-	CellThor.Load("Cells.jpg");
+	//CellThor.Load("Cells.jpg");
 
-	Wheel.Load(".objects\\Wheel.obj", "");
-	Pipe1.Load(".objects\\Pipe1.obj", "");
-	Pipe2.Load(".objects\\Pipe2.obj", "");
-	Pipe3.Load(".objects\\Pipe3.obj", "");
-	PipeBend.Load(".objects\\PipeBend.obj", "");
-	Damper.Load(".objects\\Damper.obj", "");
-	Reductor.Load(".objects\\Reductor.obj", "");
-	Shaft.Load(".objects\\Shaft.obj", "");
-	Engine.Load(".objects\\Engine.obj", "");
+	Wheel.Load("objects/Wheel.obj");
+	Pipe1.Load("objects/Pipe1.obj");
+	Pipe2.Load("objects/Pipe2.obj");
+	Pipe3.Load("objects/Pipe3.obj");
+	PipeBend.Load("objects/PipeBend.obj");
+	Damper.Load("objects/Damper.obj");
+	Reductor.Load("objects/Reductor.obj");
+	Shaft.Load("objects/Shaft.obj");
+	Shutter.Load("objects/Shutter.obj");
+	Engine.Load("objects/Engine.obj");
 
-	RegStand.Load(".objects\\Reg.Stand.obj", "");
-	RegShaft.Load(".objects\\Reg.Shaft.obj", "");
-	RegLever.Load(".objects\\Reg.Lever.obj", "");
-	RegLeverHolder.Load(".objects\\Reg.LeverHolder.obj", "");
-	RegClutch.Load(".objects\\Reg.Clutch.obj", "");
-	RegHinge.Load(".objects\\Reg.Hinge.obj", "");
-	RegHingeDown.Load(".objects\\Reg.HingeDown.obj", "");
-	RegSphere.Load(".objects\\Reg.Sphere.obj", "");
+	RegStand.Load("objects/Reg.Stand.obj");
+	RegShaft.Load("objects/Reg.Shaft.obj");
+	RegLever.Load("objects/Reg.Lever.obj");
+	RegLeverHolder.Load("objects/Reg.LeverHolder.obj");
+	RegClutch.Load("objects/Reg.Clutch.obj");
+	RegHinge.Load("objects/Reg.Hinge.obj");
+	RegHingeDown.Load("objects/Reg.HingeDown.obj");
+	RegSphere.Load("objects/Reg.Sphere.obj");
+
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
+	glClearColor(0.3, 0.25, 0.3, 0.0);
+	glClearDepth(1.0f);
+	//glDepthFunc(GL_LEQUAL);
+	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_COLOR_MATERIAL);//Разрешаем использовать цветной материал
@@ -73,19 +74,6 @@ bool OpenGL::InitGL(GLvoid)
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, color0);//тип освещения GL_DIFFUSE, цвет нулевой лампы color0
 	glLightfv(GL_LIGHT0, GL_SPECULAR, color_sp);//для GL_LIGHT0 установлено по умолчанию
 
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_TEXTURE_2D);
-	glClearColor(0.3, 0.25, 0.3, 0.0);
-	//glClearColor(0.1f, 0.2f, 0.3f, 0.5f);
-	glClearDepth(1.0f);
-	glEnable(GL_DEPTH_TEST);
-	//glDepthFunc(GL_LEQUAL);
-	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
-
-
-
-
 	return TRUE;
 }
 
@@ -95,9 +83,6 @@ GLvoid OpenGL::ReSizeGLScene(GLsizei width, GLsizei height)// Resize and initial
 	Width = width; Height = height;
 	glViewport(0, 0, width, height);
 }
-
-
-
 
 // функция, задающая формат пикселя
 GLint OpenGL::MySetPixelFormat(HDC hdc)
@@ -158,18 +143,16 @@ OpenGL::OpenGL(System::Windows::Forms::Form^ parentForm, int iWidth, GLsizei iHe
 	}
 }
 
-// деструктор
-OpenGL::~OpenGL(System::Void)
+OpenGL::~OpenGL(System::Void) // деструктор
+
 {
 	this->DestroyHandle();
 }
 
-
-
 void SetProjectionMatrix(Camera& cam) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(cam.Perspective, (GLfloat)Width/Height, 0.001, 1000.0);
+	gluPerspective(cam.Perspective, (GLfloat)Width/Height, 0.15, 1000.0);
 	glm::vec3 dest = cam.Position + cam.Front;
 	gluLookAt(cam.Position.x, cam.Position.y, cam.Position.z, dest.x, dest.y, dest.z, cam.Up.x, cam.Up.y, cam.Up.z);
 	glMatrixMode(GL_MODELVIEW);
@@ -199,6 +182,7 @@ System::Void OpenGL::Render(System::Void)
 	Damper.Draw();
 	Reductor.Draw();
 	Shaft.Draw();
+	Shutter.Draw();
 	Engine.Draw();
 
 	Space.Bind();
@@ -216,4 +200,3 @@ System::Void OpenGL::Render(System::Void)
 	glPopMatrix();
 	SwapBuffers(m_hDC);
 }
-
