@@ -185,6 +185,7 @@ System::Void OpenGL::Render(System::Void)
 	camera.Position = normalize(camera.Position) * this->distance;
 	camera.updateCameraVectors();
 	SetProjectionMatrix(camera);
+
 	glPushMatrix();
 	glTranslatef(0.4, -0.8, 0);
 	
