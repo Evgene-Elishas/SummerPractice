@@ -31,8 +31,9 @@ Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, RegHinge, RegHinge
 // инициализация OpenGL
 bool OpenGL::InitGL(GLvoid)
 {
+
 	Sun.Load("WheelWagon.jpg");
-	Space.Load("Space.png");
+	Space.Load("Centr.png");
 	CellThor.Load("Cells.jpg");
 
 	Wheel.Load(".objects\\Wheel.obj", "");
@@ -63,7 +64,7 @@ bool OpenGL::InitGL(GLvoid)
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	float pos0[4] = { 0,5,0,1 };//положение точечного источника света
+	float pos0[4] = { 0,0,5,1 };//положение точечного источника света
 	float amb[4] = { 0,0,0,0 };//цвет и интенсивность
 	float color0[4] = { 1,1,1,1 };//цвет и интенсивность источника света
 	float color_sp[4] = { 1,1,1,1 };//цвет зеркального источника света
@@ -72,7 +73,7 @@ bool OpenGL::InitGL(GLvoid)
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, color0);//тип освещения GL_DIFFUSE, цвет нулевой лампы color0
 	glLightfv(GL_LIGHT0, GL_SPECULAR, color_sp);//для GL_LIGHT0 установлено по умолчанию
 
-	//glShadeModel(GL_SMOOTH);
+	glShadeModel(GL_SMOOTH);
 	glEnable(GL_TEXTURE_2D);
 	glClearColor(0.3, 0.25, 0.3, 0.0);
 	//glClearColor(0.1f, 0.2f, 0.3f, 0.5f);
@@ -179,8 +180,8 @@ System::Void OpenGL::Render(System::Void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	//camera.Yaw = this->yaw;
-	//camera.Pitch += this->pitch;
+	camera.Yaw = this->yaw - 90;
+	camera.Pitch = this->pitch;
 	camera.Position = normalize(camera.Position) * this->distance;
 	camera.updateCameraVectors();
 	SetProjectionMatrix(camera);
@@ -198,6 +199,8 @@ System::Void OpenGL::Render(System::Void)
 	Reductor.Draw();
 	Shaft.Draw();
 	Engine.Draw();
+
+	Space.Bind();
 
 	RegStand.Draw();
 	RegShaft.Draw();
