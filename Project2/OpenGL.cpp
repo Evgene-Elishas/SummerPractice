@@ -6,6 +6,12 @@
 #include <GL/glu.h>
 #include "OpenGL.h"
 
+#include <fstream>
+using namespace std;
+ofstream log_file;
+
+
+
 #include "Item.h"
 #include "Camera.h"
 
@@ -17,15 +23,19 @@
 using namespace System::Windows::Forms;
 int Width, Height;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.5f)); 
-MyTexture Sun, CellThor, Space;
+MyTexture WheelTex, CellThor, RegulatorTex;
 Mesh Wheel, Pipe1, Pipe2, Pipe3, PipeBend, Damper, Reductor, Shaft, Shutter, Engine;
 Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, RegHinge, RegHingeDown, RegSphere;
+
 
 // инициализация OpenGL
 bool OpenGL::InitGL(GLvoid)
 {
-	Sun.Load("WheelWagon.jpg");
-	Space.Load("Centr.png");
+	log_file.open("log.txt");
+
+
+	WheelTex.Load("WheelWagon.jpg");
+	RegulatorTex.Load("RegulatorTex.png");
 	//CellThor.Load("Cells.jpg");
 
 	Wheel.Load("objects/Wheel.obj");
@@ -172,7 +182,7 @@ System::Void OpenGL::Render(System::Void)
 	glPushMatrix();
 	glTranslatef(0.4, -0.8, 0);
 	
-	Sun.Bind();
+	WheelTex.Bind();
 	//glRotated(GetTickCount() % 36000 / 20.f, 0, 1, 0);
 	Wheel.Draw();
 	Pipe1.Draw();
@@ -185,7 +195,7 @@ System::Void OpenGL::Render(System::Void)
 	Shutter.Draw();
 	Engine.Draw();
 
-	Space.Bind();
+	RegulatorTex.Bind();
 
 	RegStand.Draw();
 	RegShaft.Draw();

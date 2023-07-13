@@ -80,6 +80,7 @@ struct Mesh
 				}
 			}
 		}
+		else {log_file << "Не удалось считать объект из файла: " << filename << endl; log_file.flush();}
 		
 	}
 

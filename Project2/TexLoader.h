@@ -3,7 +3,8 @@
 #include "stb\stb_image.h"
 #include <windows.h>
 #include "GLFW\glfw3.h"
-#include <iostream>
+//#include <iostream>
+#include <fstream>
 
 struct MyTexture {
 	GLuint texID;
@@ -31,6 +32,7 @@ struct MyTexture {
 
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
+		else {log_file << "Не удалось считать текстуру из файла: " << filename << endl; log_file.flush();}
 		stbi_image_free(data);
 		return is_loaded;
 	}

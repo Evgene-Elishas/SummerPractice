@@ -9,5 +9,6 @@ int main(array<System::String^>^ args)
 	Application::SetCompatibleTextRenderingDefault(false);
 	Project2::MyForm form;
 	Application::Run(% form);
+	//Application::Exit();
 	return 0;
 }
