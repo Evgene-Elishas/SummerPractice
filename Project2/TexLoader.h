@@ -41,6 +41,10 @@ struct MyTexture {
 		glBindTexture(GL_TEXTURE_2D, texID);
 	}
 
+	static void UnBind() {
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
 	~MyTexture() {
 		glDeleteTextures(1, &texID);
 	}

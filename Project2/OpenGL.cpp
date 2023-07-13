@@ -1,16 +1,12 @@
 #include "OpenGL.h"
-
-#include <windows.h>
-#include <Windowsx.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include "OpenGL.h"
+//#include <windows.h>
+//#include <Windowsx.h>
+//#include <GL/gl.h>
+//#include <GL/glu.h>
 
 #include <fstream>
 using namespace std;
 ofstream log_file;
-
-
 
 #include "Item.h"
 #include "Camera.h"
@@ -27,12 +23,9 @@ MyTexture WheelTex, CellThor, RegulatorTex;
 Mesh Wheel, Pipe1, Pipe2, Pipe3, PipeBend, Damper, Reductor, Shaft, Shutter, Engine;
 Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, RegHinge, RegHingeDown, RegSphere;
 
-
-// инициализация OpenGL
-bool OpenGL::InitGL(GLvoid)
+bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
 {
 	log_file.open("log.txt");
-
 
 	WheelTex.Load("WheelWagon.jpg");
 	RegulatorTex.Load("RegulatorTex.png");
@@ -206,7 +199,8 @@ System::Void OpenGL::Render(System::Void)
 	RegHingeDown.Draw();
 	RegSphere.Draw();
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	MyTexture::UnBind();
 	glPopMatrix();
 	SwapBuffers(m_hDC);
 }
