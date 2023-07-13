@@ -3,7 +3,6 @@
 #include "stb\stb_image.h"
 #include <windows.h>
 #include "GLFW\glfw3.h"
-//#include <iostream>
 #include <fstream>
 
 struct MyTexture {
