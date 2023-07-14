@@ -19,7 +19,7 @@ ofstream log_file;
 using namespace System::Windows::Forms;
 int Width, Height;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.5f)); 
-MyTexture WheelTex, Wood, RegulatorTex;
+MyTexture WheelTex, Wood, RegulatorTex, Rock;
 Mesh Wheel, Pipe1, Pipe2, Pipe3, PipeBend, Damper, Reductor, Shaft, Shutter, Engine;
 Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, 
 	RegHingeLeftDown, RegHingeRightDown, RegHingeRightUp, RegHingeLeftUp, RegSphereLeft, RegSphereRight;
@@ -30,7 +30,8 @@ bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
 
 	WheelTex.Load("WheelWagon.jpg");
 	RegulatorTex.Load("RegulatorTex.png");
-	Wood.Load("wood-4_diffuse.jpg");
+	Wood.Load("wood-4_smooth.png");
+	Rock.Load("Rock_basecolor.jpg");
 
 	Wheel.Load(".objects/Wheel.obj");
 	Pipe1.Load(".objects/Pipe1.obj");
@@ -165,6 +166,19 @@ void SetProjectionMatrix(Camera& cam) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+
+void NoTranslated(void) {}
+
+
+inline void TexturedTransformatedDraw(Mesh m, MyTexture t, void (*f)(void) = NoTranslated) {
+	t.Bind();
+	//glPushMatrix();
+	//f();
+	m.Draw();
+	//glPopMatrix();
+}
+
+
 // функция рисования
 System::Void OpenGL::Render(System::Void)
 {
@@ -177,14 +191,13 @@ System::Void OpenGL::Render(System::Void)
 	SetProjectionMatrix(camera);
 
 	glPushMatrix();
-	//glTranslatef(0.4, -0.8, 0);
 	
 	WheelTex.Bind();
 	//glRotated(GetTickCount() % 36000 / 20.f, 0, 1, 0);
 	Wheel.Draw();
 	
 	Wood.Bind();
-	
+
 	Pipe1.Draw();
 	Pipe2.Draw();
 	Pipe3.Draw();
@@ -193,6 +206,9 @@ System::Void OpenGL::Render(System::Void)
 	Reductor.Draw();
 	Shaft.Draw();
 	Shutter.Draw();
+
+	Rock.Bind();
+
 	Engine.Draw();
 
 	RegulatorTex.Bind();

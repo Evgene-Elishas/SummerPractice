@@ -57,7 +57,8 @@ struct Mesh
 				}
 				else if (line.find("vt ") == 0) {
 					sscanf(line.c_str(), "vt %f %f", &temp2.x, &temp2.y);
-					tCoord.push_back(temp1);
+					temp2.y = 1 -temp2.y;
+					tCoord.push_back(temp2);
 				}
 				else if (line.find("v ") == 0) {
 					sscanf(line.c_str(), "v %f %f %f", &temp1.x, &temp1.y, &temp1.z);
