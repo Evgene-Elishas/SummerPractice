@@ -63,6 +63,20 @@ namespace Project2 {
 
 
 	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::HScrollBar^ hScrollBar4;
+	private: System::Windows::Forms::HScrollBar^ hScrollBar5;
+	private: System::Windows::Forms::Label^ label5;
+	private: System::Windows::Forms::Label^ label6;
+	private: System::Windows::Forms::Label^ label7;
+	private: System::Windows::Forms::Label^ label8;
+	private: System::Windows::Forms::Label^ label9;
+	private: System::Windows::Forms::Label^ label10;
+	private: System::Windows::Forms::Label^ label11;
+	private: System::Windows::Forms::Label^ label12;
+	private: System::Windows::Forms::Label^ label13;
+	private: System::Windows::Forms::Label^ label14;
+	private: System::Windows::Forms::Label^ label15;
 
 
 
@@ -97,6 +111,20 @@ namespace Project2 {
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->ToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->hScrollBar4 = (gcnew System::Windows::Forms::HScrollBar());
+			this->hScrollBar5 = (gcnew System::Windows::Forms::HScrollBar());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->label11 = (gcnew System::Windows::Forms::Label());
+			this->label12 = (gcnew System::Windows::Forms::Label());
+			this->label13 = (gcnew System::Windows::Forms::Label());
+			this->label14 = (gcnew System::Windows::Forms::Label());
+			this->label15 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -117,14 +145,13 @@ namespace Project2 {
 			this->hScrollBar1->Maximum = 180;
 			this->hScrollBar1->Minimum = -180;
 			this->hScrollBar1->Name = L"hScrollBar1";
-			this->hScrollBar1->Value = 10;
 			this->hScrollBar1->Scroll += gcnew System::Windows::Forms::ScrollEventHandler(this, &MyForm::hScrollBar1_Scroll);
 			// 
 			// hScrollBar2
 			// 
 			this->hScrollBar2->Cursor = System::Windows::Forms::Cursors::Hand;
 			resources->ApplyResources(this->hScrollBar2, L"hScrollBar2");
-			this->hScrollBar2->LargeChange = 20;
+			this->hScrollBar2->LargeChange = 18;
 			this->hScrollBar2->Maximum = 89;
 			this->hScrollBar2->Minimum = -89;
 			this->hScrollBar2->Name = L"hScrollBar2";
@@ -180,10 +207,108 @@ namespace Project2 {
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
+			// label4
+			// 
+			resources->ApplyResources(this->label4, L"label4");
+			this->label4->Name = L"label4";
+			// 
+			// hScrollBar4
+			// 
+			this->hScrollBar4->Cursor = System::Windows::Forms::Cursors::Hand;
+			resources->ApplyResources(this->hScrollBar4, L"hScrollBar4");
+			this->hScrollBar4->LargeChange = 7;
+			this->hScrollBar4->Maximum = 70;
+			this->hScrollBar4->Name = L"hScrollBar4";
+			this->hScrollBar4->Scroll += gcnew System::Windows::Forms::ScrollEventHandler(this, &MyForm::hScrollBar4_Scroll);
+			// 
+			// hScrollBar5
+			// 
+			this->hScrollBar5->Cursor = System::Windows::Forms::Cursors::Hand;
+			resources->ApplyResources(this->hScrollBar5, L"hScrollBar5");
+			this->hScrollBar5->LargeChange = 16;
+			this->hScrollBar5->Maximum = 200;
+			this->hScrollBar5->Minimum = 40;
+			this->hScrollBar5->Name = L"hScrollBar5";
+			this->hScrollBar5->Value = 60;
+			this->hScrollBar5->Scroll += gcnew System::Windows::Forms::ScrollEventHandler(this, &MyForm::hScrollBar5_Scroll);
+			// 
+			// label5
+			// 
+			resources->ApplyResources(this->label5, L"label5");
+			this->label5->Name = L"label5";
+			// 
+			// label6
+			// 
+			resources->ApplyResources(this->label6, L"label6");
+			this->label6->Name = L"label6";
+			this->label6->Click += gcnew System::EventHandler(this, &MyForm::label6_Click);
+			// 
+			// label7
+			// 
+			resources->ApplyResources(this->label7, L"label7");
+			this->label7->Name = L"label7";
+			this->label7->Click += gcnew System::EventHandler(this, &MyForm::label7_Click);
+			// 
+			// label8
+			// 
+			resources->ApplyResources(this->label8, L"label8");
+			this->label8->Name = L"label8";
+			// 
+			// label9
+			// 
+			resources->ApplyResources(this->label9, L"label9");
+			this->label9->Name = L"label9";
+			// 
+			// label10
+			// 
+			resources->ApplyResources(this->label10, L"label10");
+			this->label10->Name = L"label10";
+			this->label10->Click += gcnew System::EventHandler(this, &MyForm::label10_Click);
+			// 
+			// label11
+			// 
+			resources->ApplyResources(this->label11, L"label11");
+			this->label11->Name = L"label11";
+			// 
+			// label12
+			// 
+			resources->ApplyResources(this->label12, L"label12");
+			this->label12->Name = L"label12";
+			// 
+			// label13
+			// 
+			resources->ApplyResources(this->label13, L"label13");
+			this->label13->Name = L"label13";
+			// 
+			// label14
+			// 
+			resources->ApplyResources(this->label14, L"label14");
+			this->label14->Name = L"label14";
+			// 
+			// label15
+			// 
+			resources->ApplyResources(this->label15, L"label15");
+			this->label15->Name = L"label15";
+			this->label15->Click += gcnew System::EventHandler(this, &MyForm::label15_Click);
+			// 
 			// MyForm
 			// 
 			resources->ApplyResources(this, L"$this");
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->Controls->Add(this->label15);
+			this->Controls->Add(this->label14);
+			this->Controls->Add(this->label13);
+			this->Controls->Add(this->label12);
+			this->Controls->Add(this->label11);
+			this->Controls->Add(this->label10);
+			this->Controls->Add(this->label9);
+			this->Controls->Add(this->label8);
+			this->Controls->Add(this->label7);
+			this->Controls->Add(this->label6);
+			this->Controls->Add(this->hScrollBar5);
+			this->Controls->Add(this->label5);
+			this->Controls->Add(this->hScrollBar4);
+			this->Controls->Add(this->label4);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
@@ -234,6 +359,20 @@ private: System::Void hScrollBar2_Scroll(System::Object^ sender, System::Windows
 }
 private: System::Void hScrollBar3_Scroll_1(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
 	this->opengl->distance = int(e->NewValue) * 0.05;
+}
+private: System::Void hScrollBar4_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
+	this->opengl->angle = e->NewValue;
+}
+private: System::Void label6_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void label7_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void label10_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void label15_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void hScrollBar5_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
+	this->opengl->speed = e->NewValue * 0.01;
 }
 };
 }

@@ -11,6 +11,8 @@ ofstream log_file;
 #include "Item.h"
 #include "Camera.h"
 
+
+
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "gdi32.lib")
 #pragma comment(lib, "User32.lib")
@@ -24,9 +26,30 @@ Mesh Wheel, Pipe1, Pipe2, Pipe3, PipeBend, Damper, Reductor, Shaft, Shutter, Eng
 Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, 
 	RegHingeLeftDown, RegHingeRightDown, RegHingeRightUp, RegHingeLeftUp, RegSphereLeft, RegSphereRight;
 
+//(-0.051844, -0.025269, -0.000312);
+//(-0.051272, 0.433437, -0.000027);
+#define M_PI        3.14159265358979323846264338327950288   /* pi */
+glm::vec3 p1(-0.051272, 0.433437, -0.000027), p2(-0.126626, 0.221905, -0.221905), p3(-0.051844, -0.025269, -0.000312);
+glm::vec2 p1f(-0.051272, 0.433437), p2f(-0.126626, 0.221905), p3f(-0.051844, -0.025269);
+float leng1, h1, tetazero1, leng2, h2, tetazero2;
+
+
+
+
 bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
 {
 	log_file.open("log.txt");
+
+	leng1 = glm::length(p1f - p2f);
+	h1 = p1f.y - p2f.y;
+	tetazero1 = acosf(h1 / leng1);
+
+	leng2 = glm::length(p2f - p3f);
+	h2 = p2f.y - p3f.y;
+	tetazero2 = acosf(h2 / leng2);
+	
+	log_file << leng1 << " " << h1 << " " << glm::degrees(tetazero1) << endl << leng2 << " " << h2 << " " << glm::degrees(tetazero2);
+	log_file.flush();
 
 	WheelTex.Load("WheelWagon.jpg");
 	RegulatorTex.Load("RegulatorTex.png");
@@ -56,6 +79,9 @@ bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
 	RegSphereLeft.Load(".objects/RegSphereLeft.obj");
 	RegSphereRight.Load(".objects/RegSphereRight.obj");
 
+	
+	
+	
 	//glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
@@ -81,6 +107,14 @@ bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
 	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, color0);//тип освещения GL_DIFFUSE, цвет нулевой лампы color0
 	glLightfv(GL_LIGHT0, GL_SPECULAR, color_sp);//для GL_LIGHT0 установлено по умолчанию
+
+	/*glEnable(GL_LIGHT1);
+	float pos1[4] = { 0,0,-5,1 };//положение точечного источника света
+	glLightfv(GL_LIGHT1, GL_POSITION, pos1);//положение нулевой лампы
+	glLightfv(GL_LIGHT1, GL_AMBIENT, amb);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, color0);//тип освещения GL_DIFFUSE, цвет нулевой лампы color0
+	glLightfv(GL_LIGHT1, GL_SPECULAR, color_sp);//для GL_LIGHT0 установлено по умолчанию*/
+
 
 	return TRUE;
 }
@@ -182,10 +216,18 @@ inline void TexturedTransformatedDraw(Mesh m, MyTexture t, void (*f)(void) = NoT
 // функция рисования
 System::Void OpenGL::Render(System::Void)
 {
+	static float fi = 0;
+	fi = fi + this->speed * 0.01 * 360;
+
+	float teta = this->angle;
+
+	float teta2 = teta * (tetazero2/ tetazero1);
+	float deltah = (h1 - leng1 * cos(glm::radians(teta) + tetazero1)) + (h2 - leng2 * cos(glm::radians(teta2) + tetazero2));
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	camera.Yaw = this->yaw - 90;
-	camera.Pitch = this->pitch;
+	camera.Yaw = -this->yaw - 90;
+	camera.Pitch = -this->pitch;
 	camera.Position = normalize(camera.Position) * this->distance;
 	camera.updateCameraVectors();
 	SetProjectionMatrix(camera);
@@ -194,7 +236,14 @@ System::Void OpenGL::Render(System::Void)
 	
 	WheelTex.Bind();
 	//glRotated(GetTickCount() % 36000 / 20.f, 0, 1, 0);
+	
+	
+	glPushMatrix();
+	glTranslatef(-0.093914, -0.010673, 0);
+	glRotatef(fi, 1, 0, 0);
+	glTranslatef(0.093914, 0.010673, 0);
 	Wheel.Draw();
+	glPopMatrix();
 	
 	Wood.Bind();
 
@@ -203,27 +252,80 @@ System::Void OpenGL::Render(System::Void)
 	Pipe3.Draw();
 	PipeBend.Draw();
 	Damper.Draw();
-	Reductor.Draw();
 	Shaft.Draw();
+	//Shutter.Draw();
+
+	glPushMatrix();
+	glTranslatef(0, -deltah, 0);
 	Shutter.Draw();
+	glPopMatrix();
 
 	Rock.Bind();
 
+	Reductor.Draw();
 	Engine.Draw();
 
 	RegulatorTex.Bind();
 
 	RegStand.Draw();
-	RegShaft.Draw();
+
+	glPushMatrix();
+	glTranslatef(-0.24089, -0.135087, 0.0);
+	glRotatef(teta * cosf(glm::radians(teta)), 0, 0, 1);
+	glTranslatef(0.24089, 0.135087, 0.0);
 	RegLever.Draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0, deltah, 0);
 	RegLeverHolder.Draw();
+	glPopMatrix();
+
+	glRotatef(fi, 0, fi, 0);
+
+	glPushMatrix();
+	glTranslatef(0, deltah, 0);
 	RegClutch.Draw();
-	RegHingeLeftDown.Draw();
-	RegHingeRightDown.Draw();
-	RegHingeRightUp.Draw();
+	glPopMatrix();
+
+	RegShaft.Draw();
+	
+	glPushMatrix();
+	//glRotatef(90, 0, 1, 0);
+	glTranslatef(p1.x, p1.y, p1.z);
+	glRotatef(teta, 0,0,-1);
+	glTranslatef(-p1.x, -p1.y, -p1.z);
 	RegHingeLeftUp.Draw();
 	RegSphereLeft.Draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	//glRotatef(90, 0, 1, 0);
+	glTranslatef(p3.x, p3.y + deltah, p3.z);
+	glRotatef(teta2, 0, 0, 1);
+	glTranslatef(-p3.x, -p3.y, p3.z);
+	RegHingeLeftDown.Draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	//glRotatef(90, 0, 1, 0);
+	glTranslatef(-p1.x, p1.y, p1.z);
+	glRotatef(teta, 0, 0, 1);
+	glTranslatef(p1.x, -p1.y, -p1.z);
+	RegHingeRightUp.Draw();
 	RegSphereRight.Draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	//glRotatef(90, 0, 1, 0);
+	glTranslatef(-p3.x, p3.y + deltah, p3.z);
+	glRotatef(teta2, 0, 0, -1);
+	glTranslatef(p3.x, -p3.y, p3.z);
+	RegHingeRightDown.Draw();
+	glPopMatrix();
+
+	
+	//RegSphereRight.Draw();
 
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	MyTexture::UnBind();
