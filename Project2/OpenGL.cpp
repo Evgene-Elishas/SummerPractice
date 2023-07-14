@@ -19,9 +19,10 @@ ofstream log_file;
 using namespace System::Windows::Forms;
 int Width, Height;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.5f)); 
-MyTexture WheelTex, CellThor, RegulatorTex;
+MyTexture WheelTex, Wood, RegulatorTex;
 Mesh Wheel, Pipe1, Pipe2, Pipe3, PipeBend, Damper, Reductor, Shaft, Shutter, Engine;
-Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, RegHinge, RegHingeDown, RegSphere;
+Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, 
+	RegHingeLeftDown, RegHingeRightDown, RegHingeRightUp, RegHingeLeftUp, RegSphereLeft, RegSphereRight;
 
 bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
 {
@@ -29,29 +30,32 @@ bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
 
 	WheelTex.Load("WheelWagon.jpg");
 	RegulatorTex.Load("RegulatorTex.png");
-	//CellThor.Load("Cells.jpg");
+	Wood.Load("wood-4_diffuse.jpg");
 
-	Wheel.Load("objects/Wheel.obj");
-	Pipe1.Load("objects/Pipe1.obj");
-	Pipe2.Load("objects/Pipe2.obj");
-	Pipe3.Load("objects/Pipe3.obj");
-	PipeBend.Load("objects/PipeBend.obj");
-	Damper.Load("objects/Damper.obj");
-	Reductor.Load("objects/Reductor.obj");
-	Shaft.Load("objects/Shaft.obj");
-	Shutter.Load("objects/Shutter.obj");
-	Engine.Load("objects/Engine.obj");
+	Wheel.Load(".objects/Wheel.obj");
+	Pipe1.Load(".objects/Pipe1.obj");
+	Pipe2.Load(".objects/Pipe2.obj");
+	Pipe3.Load(".objects/Pipe3.obj");
+	PipeBend.Load(".objects/PipeBend.obj");
+	Damper.Load(".objects/Damper.obj");
+	Reductor.Load(".objects/Reductor.obj");
+	Shaft.Load(".objects/Shaft.obj");
+	Shutter.Load(".objects/Shutter.obj");
+	Engine.Load(".objects/Engine.obj");
 
-	RegStand.Load("objects/Reg.Stand.obj");
-	RegShaft.Load("objects/Reg.Shaft.obj");
-	RegLever.Load("objects/Reg.Lever.obj");
-	RegLeverHolder.Load("objects/Reg.LeverHolder.obj");
-	RegClutch.Load("objects/Reg.Clutch.obj");
-	RegHinge.Load("objects/Reg.Hinge.obj");
-	RegHingeDown.Load("objects/Reg.HingeDown.obj");
-	RegSphere.Load("objects/Reg.Sphere.obj");
+	RegStand.Load(".objects/RegStand.obj");
+	RegShaft.Load(".objects/RegShaft.obj");
+	RegLever.Load(".objects/RegLever.obj");
+	RegLeverHolder.Load(".objects/RegLeverHolder.obj");
+	RegClutch.Load(".objects/RegClutch.obj");
+	RegHingeLeftDown.Load(".objects/RegHingeLeftDown.obj");
+	RegHingeRightDown.Load(".objects/RegHingeRightDown.obj");
+	RegHingeRightUp.Load(".objects/RegHingeRightUp.obj");
+	RegHingeLeftUp.Load(".objects/RegHingeLeftUp.obj");
+	RegSphereLeft.Load(".objects/RegSphereLeft.obj");
+	RegSphereRight.Load(".objects/RegSphereRight.obj");
 
-	glShadeModel(GL_SMOOTH);
+	//glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glClearColor(0.3, 0.25, 0.3, 0.0);
@@ -173,11 +177,14 @@ System::Void OpenGL::Render(System::Void)
 	SetProjectionMatrix(camera);
 
 	glPushMatrix();
-	glTranslatef(0.4, -0.8, 0);
+	//glTranslatef(0.4, -0.8, 0);
 	
 	WheelTex.Bind();
 	//glRotated(GetTickCount() % 36000 / 20.f, 0, 1, 0);
 	Wheel.Draw();
+	
+	Wood.Bind();
+	
 	Pipe1.Draw();
 	Pipe2.Draw();
 	Pipe3.Draw();
@@ -195,9 +202,12 @@ System::Void OpenGL::Render(System::Void)
 	RegLever.Draw();
 	RegLeverHolder.Draw();
 	RegClutch.Draw();
-	RegHinge.Draw();
-	RegHingeDown.Draw();
-	RegSphere.Draw();
+	RegHingeLeftDown.Draw();
+	RegHingeRightDown.Draw();
+	RegHingeRightUp.Draw();
+	RegHingeLeftUp.Draw();
+	RegSphereLeft.Draw();
+	RegSphereRight.Draw();
 
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	MyTexture::UnBind();
