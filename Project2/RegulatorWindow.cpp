@@ -30,7 +30,7 @@ float leng1 = glm::length(p1f - p2f), h1 = p1f.y - p2f.y, tetazero1 = acosf(h1 /
 	  h0 = p1.y - p3.y;
 
 
-bool RegulatorWindow::InitGL(GLvoid)// инициализация RegulatorWindow
+bool RegulatorWindow::InitGL(GLvoid)// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ RegulatorWindow
 {
 	log_file.open("log.txt");
 
@@ -85,40 +85,40 @@ bool RegulatorWindow::InitGL(GLvoid)// инициализация RegulatorWindow
 	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glEnable(GL_NORMALIZE);
-	glEnable(GL_COLOR_MATERIAL);//Разрешаем использовать цветной материал
-	glEnable(GL_LIGHTING);	//разрешаем освещение
+	glEnable(GL_COLOR_MATERIAL);//Р Р°Р·СЂРµС€Р°РµРј РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ С†РІРµС‚РЅРѕР№ РјР°С‚РµСЂРёР°Р»
+	glEnable(GL_LIGHTING);	//СЂР°Р·СЂРµС€Р°РµРј РѕСЃРІРµС‰РµРЅРёРµ
 	//glEnable(GL_CULL_FACE);
-	float ambient[4] = { 0.1,0.1,0.1, 1.0 };//цвет и интенсивность фонового освещения
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);//режим фонового освещения
+	float ambient[4] = { 0.1,0.1,0.1, 1.0 };//С†РІРµС‚ Рё РёРЅС‚РµРЅСЃРёРІРЅРѕСЃС‚СЊ С„РѕРЅРѕРІРѕРіРѕ РѕСЃРІРµС‰РµРЅРёСЏ
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);//СЂРµР¶РёРј С„РѕРЅРѕРІРѕРіРѕ РѕСЃРІРµС‰РµРЅРёСЏ
 	glEnable(GL_LIGHT0);
-	float pos0[4] = { 0,0,5,1 };//положение точечного источника света
-	float amb[4] = { 0,0,0,0 };//цвет и интенсивность
-	float color0[4] = { 1,1,1,1 };//цвет и интенсивность источника света
-	float color_sp[4] = { 1,1,1,1 };//цвет зеркального источника света
-	glLightfv(GL_LIGHT0, GL_POSITION, pos0);//положение нулевой лампы
+	float pos0[4] = { 0,0,5,1 };//РїРѕР»РѕР¶РµРЅРёРµ С‚РѕС‡РµС‡РЅРѕРіРѕ РёСЃС‚РѕС‡РЅРёРєР° СЃРІРµС‚Р°
+	float amb[4] = { 0,0,0,0 };//С†РІРµС‚ Рё РёРЅС‚РµРЅСЃРёРІРЅРѕСЃС‚СЊ
+	float color0[4] = { 1,1,1,1 };//С†РІРµС‚ Рё РёРЅС‚РµРЅСЃРёРІРЅРѕСЃС‚СЊ РёСЃС‚РѕС‡РЅРёРєР° СЃРІРµС‚Р°
+	float color_sp[4] = { 1,1,1,1 };//С†РІРµС‚ Р·РµСЂРєР°Р»СЊРЅРѕРіРѕ РёСЃС‚РѕС‡РЅРёРєР° СЃРІРµС‚Р°
+	glLightfv(GL_LIGHT0, GL_POSITION, pos0);//РїРѕР»РѕР¶РµРЅРёРµ РЅСѓР»РµРІРѕР№ Р»Р°РјРїС‹
 	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, color0);//тип освещения GL_DIFFUSE, цвет нулевой лампы color0
-	glLightfv(GL_LIGHT0, GL_SPECULAR, color_sp);//для GL_LIGHT0 установлено по умолчанию
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, color0);//С‚РёРї РѕСЃРІРµС‰РµРЅРёСЏ GL_DIFFUSE, С†РІРµС‚ РЅСѓР»РµРІРѕР№ Р»Р°РјРїС‹ color0
+	glLightfv(GL_LIGHT0, GL_SPECULAR, color_sp);//РґР»СЏ GL_LIGHT0 СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 
 	/*glEnable(GL_LIGHT1);
-	float pos1[4] = { 0,0,-5,1 };//положение точечного источника света
-	glLightfv(GL_LIGHT1, GL_POSITION, pos1);//положение нулевой лампы
+	float pos1[4] = { 0,0,-5,1 };//РїРѕР»РѕР¶РµРЅРёРµ С‚РѕС‡РµС‡РЅРѕРіРѕ РёСЃС‚РѕС‡РЅРёРєР° СЃРІРµС‚Р°
+	glLightfv(GL_LIGHT1, GL_POSITION, pos1);//РїРѕР»РѕР¶РµРЅРёРµ РЅСѓР»РµРІРѕР№ Р»Р°РјРїС‹
 	glLightfv(GL_LIGHT1, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, color0);//тип освещения GL_DIFFUSE, цвет нулевой лампы color0
-	glLightfv(GL_LIGHT1, GL_SPECULAR, color_sp);//для GL_LIGHT0 установлено по умолчанию*/
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, color0);//С‚РёРї РѕСЃРІРµС‰РµРЅРёСЏ GL_DIFFUSE, С†РІРµС‚ РЅСѓР»РµРІРѕР№ Р»Р°РјРїС‹ color0
+	glLightfv(GL_LIGHT1, GL_SPECULAR, color_sp);//РґР»СЏ GL_LIGHT0 СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ*/
 
 
 	return TRUE;
 }
 
-// функция, вызывающаяся при изменении размеров оьласти вывода 
+// С„СѓРЅРєС†РёСЏ, РІС‹Р·С‹РІР°СЋС‰Р°СЏСЃСЏ РїСЂРё РёР·РјРµРЅРµРЅРёРё СЂР°Р·РјРµСЂРѕРІ РѕСЊР»Р°СЃС‚Рё РІС‹РІРѕРґР° 
 GLvoid RegulatorWindow::ReSizeGLScene(GLsizei width, GLsizei height)// Resize and initialise the gl window
 {
 	Width = width; Height = height;
 	glViewport(0, 0, width, height);
 }
 
-// функция, задающая формат пикселя
+// С„СѓРЅРєС†РёСЏ, Р·Р°РґР°СЋС‰Р°СЏ С„РѕСЂРјР°С‚ РїРёРєСЃРµР»СЏ
 GLint RegulatorWindow::MySetPixelFormat(HDC hdc)
 {
 	static PIXELFORMATDESCRIPTOR pfd = {
@@ -159,7 +159,7 @@ GLint RegulatorWindow::MySetPixelFormat(HDC hdc)
 	return 1;
 }
 
-// конструктор
+// РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
 RegulatorWindow::RegulatorWindow(System::Windows::Forms::Form^ parentForm, int iWidth, int iHeight, int iPosX, int iPosY)
 {
 	Width = iWidth; Height = iHeight;
@@ -177,7 +177,7 @@ RegulatorWindow::RegulatorWindow(System::Windows::Forms::Form^ parentForm, int i
 	}
 }
 
-RegulatorWindow::~RegulatorWindow(System::Void) // деструктор
+RegulatorWindow::~RegulatorWindow(System::Void) // РґРµСЃС‚СЂСѓРєС‚РѕСЂ
 
 {
 	this->DestroyHandle();
@@ -201,7 +201,7 @@ float omega = 0.5; //sqrt(Tk * Tk - 4 * gamma * Tr * Tr) / (2 * Tr * Tr);
 float c1 = mu0 - fi0 / gamma;
 float c2 = mu0der / omega - beta / omega * c1;
 
-// функция рисования
+// С„СѓРЅРєС†РёСЏ СЂРёСЃРѕРІР°РЅРёСЏ
 System::Void RegulatorWindow::Render(System::Void)
 {
 	wglMakeCurrent(m_hDC, m_hglrc);
