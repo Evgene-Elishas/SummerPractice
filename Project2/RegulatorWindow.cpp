@@ -11,6 +11,7 @@ ofstream log_file;
 #include "Item.h"
 #include "Camera.h"
 
+
 using namespace System::Windows::Forms;
 int Width, Height;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.5f)); 
@@ -24,12 +25,12 @@ Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch,
 #define M_PI        3.14159265358979323846264338327950288   /* pi */
 glm::vec3 p1(-0.051272, 0.433437, -0.000027), p2(-0.126626, 0.221905, -0.221905), p3(-0.051844, -0.025269, -0.000312);
 glm::vec2 p1f(-0.051272, 0.433437), p2f(-0.126626, 0.221905), p3f(-0.051844, -0.025269);
-float leng1, h1, tetazero1, leng2, h2, tetazero2;
+float leng1 = glm::length(p1f - p2f), h1 = p1f.y - p2f.y, tetazero1 = acosf(h1 / leng1), 
+	  leng2 = glm::length(p2f - p3f), h2 = p2f.y - p3f.y, tetazero2 = acosf(h2 / leng2),
+	  h0 = p1.y - p3.y;
 
 
-
-
-bool RegulatorWindow::InitGL(GLvoid)// èíèöèàëèçàöèÿ RegulatorWindow
+bool RegulatorWindow::InitGL(GLvoid)// инициализация RegulatorWindow
 {
 	log_file.open("log.txt");
 
@@ -41,7 +42,7 @@ bool RegulatorWindow::InitGL(GLvoid)// èíèöèàëèçàöèÿ RegulatorWindo
 	h2 = p2f.y - p3f.y;
 	tetazero2 = acosf(h2 / leng2);
 	
-	log_file << leng1 << " " << h1 << " " << glm::degrees(tetazero1) << endl << leng2 << " " << h2 << " " << glm::degrees(tetazero2);
+	log_file << leng1 << " " << h1 << " " << glm::degrees(tetazero1) << endl << leng2 << " " << h2 << " " << glm::degrees(tetazero2) << endl << h0 << endl;
 	log_file.flush();
 
 	WheelTex.Load("WheelWagon.jpg");
@@ -84,40 +85,40 @@ bool RegulatorWindow::InitGL(GLvoid)// èíèöèàëèçàöèÿ RegulatorWindo
 	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glEnable(GL_NORMALIZE);
-	glEnable(GL_COLOR_MATERIAL);//Ðàçðåøàåì èñïîëüçîâàòü öâåòíîé ìàòåðèàë
-	glEnable(GL_LIGHTING);	//ðàçðåøàåì îñâåùåíèå
+	glEnable(GL_COLOR_MATERIAL);//Разрешаем использовать цветной материал
+	glEnable(GL_LIGHTING);	//разрешаем освещение
 	//glEnable(GL_CULL_FACE);
-	float ambient[4] = { 0.1,0.1,0.1, 1.0 };//öâåò è èíòåíñèâíîñòü ôîíîâîãî îñâåùåíèÿ
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);//ðåæèì ôîíîâîãî îñâåùåíèÿ
+	float ambient[4] = { 0.1,0.1,0.1, 1.0 };//цвет и интенсивность фонового освещения
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);//режим фонового освещения
 	glEnable(GL_LIGHT0);
-	float pos0[4] = { 0,0,5,1 };//ïîëîæåíèå òî÷å÷íîãî èñòî÷íèêà ñâåòà
-	float amb[4] = { 0,0,0,0 };//öâåò è èíòåíñèâíîñòü
-	float color0[4] = { 1,1,1,1 };//öâåò è èíòåíñèâíîñòü èñòî÷íèêà ñâåòà
-	float color_sp[4] = { 1,1,1,1 };//öâåò çåðêàëüíîãî èñòî÷íèêà ñâåòà
-	glLightfv(GL_LIGHT0, GL_POSITION, pos0);//ïîëîæåíèå íóëåâîé ëàìïû
+	float pos0[4] = { 0,0,5,1 };//положение точечного источника света
+	float amb[4] = { 0,0,0,0 };//цвет и интенсивность
+	float color0[4] = { 1,1,1,1 };//цвет и интенсивность источника света
+	float color_sp[4] = { 1,1,1,1 };//цвет зеркального источника света
+	glLightfv(GL_LIGHT0, GL_POSITION, pos0);//положение нулевой лампы
 	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, color0);//òèï îñâåùåíèÿ GL_DIFFUSE, öâåò íóëåâîé ëàìïû color0
-	glLightfv(GL_LIGHT0, GL_SPECULAR, color_sp);//äëÿ GL_LIGHT0 óñòàíîâëåíî ïî óìîë÷àíèþ
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, color0);//тип освещения GL_DIFFUSE, цвет нулевой лампы color0
+	glLightfv(GL_LIGHT0, GL_SPECULAR, color_sp);//для GL_LIGHT0 установлено по умолчанию
 
 	/*glEnable(GL_LIGHT1);
-	float pos1[4] = { 0,0,-5,1 };//ïîëîæåíèå òî÷å÷íîãî èñòî÷íèêà ñâåòà
-	glLightfv(GL_LIGHT1, GL_POSITION, pos1);//ïîëîæåíèå íóëåâîé ëàìïû
+	float pos1[4] = { 0,0,-5,1 };//положение точечного источника света
+	glLightfv(GL_LIGHT1, GL_POSITION, pos1);//положение нулевой лампы
 	glLightfv(GL_LIGHT1, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, color0);//òèï îñâåùåíèÿ GL_DIFFUSE, öâåò íóëåâîé ëàìïû color0
-	glLightfv(GL_LIGHT1, GL_SPECULAR, color_sp);//äëÿ GL_LIGHT0 óñòàíîâëåíî ïî óìîë÷àíèþ*/
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, color0);//тип освещения GL_DIFFUSE, цвет нулевой лампы color0
+	glLightfv(GL_LIGHT1, GL_SPECULAR, color_sp);//для GL_LIGHT0 установлено по умолчанию*/
 
 
 	return TRUE;
 }
 
-// ôóíêöèÿ, âûçûâàþùàÿñÿ ïðè èçìåíåíèè ðàçìåðîâ îüëàñòè âûâîäà 
+// функция, вызывающаяся при изменении размеров оьласти вывода 
 GLvoid RegulatorWindow::ReSizeGLScene(GLsizei width, GLsizei height)// Resize and initialise the gl window
 {
 	Width = width; Height = height;
 	glViewport(0, 0, width, height);
 }
 
-// ôóíêöèÿ, çàäàþùàÿ ôîðìàò ïèêñåëÿ
+// функция, задающая формат пикселя
 GLint RegulatorWindow::MySetPixelFormat(HDC hdc)
 {
 	static PIXELFORMATDESCRIPTOR pfd = {
@@ -158,7 +159,7 @@ GLint RegulatorWindow::MySetPixelFormat(HDC hdc)
 	return 1;
 }
 
-// êîíñòðóêòîð
+// конструктор
 RegulatorWindow::RegulatorWindow(System::Windows::Forms::Form^ parentForm, int iWidth, int iHeight, int iPosX, int iPosY)
 {
 	Width = iWidth; Height = iHeight;
@@ -176,7 +177,7 @@ RegulatorWindow::RegulatorWindow(System::Windows::Forms::Form^ parentForm, int i
 	}
 }
 
-RegulatorWindow::~RegulatorWindow(System::Void) // äåñòðóêòîð
+RegulatorWindow::~RegulatorWindow(System::Void) // деструктор
 
 {
 	this->DestroyHandle();
@@ -192,30 +193,39 @@ void SetProjectionMatrix(Camera& cam) {
 }
 
 
-void NoTranslated(void) {}
+float fi0 = tetazero1, mu0 = 0, mu0der = 0, Tr = 0.5, Tk = 0.5, gamma = 3.5;
 
 
-inline void TexturedTransformatedDraw(Mesh m, MyTexture t, void (*f)(void) = NoTranslated) {
-	t.Bind();
-	//glPushMatrix();
-	//f();
-	m.Draw();
-	//glPopMatrix();
-}
+float beta = -1;// -Tk / (2 * Tr * Tr);
+float omega = 0.5; //sqrt(Tk * Tk - 4 * gamma * Tr * Tr) / (2 * Tr * Tr);
+float c1 = mu0 - fi0 / gamma;
+float c2 = mu0der / omega - beta / omega * c1;
 
-
-// ôóíêöèÿ ðèñîâàíèÿ
-float b=2,m=1,j=1;
+// функция рисования
 System::Void RegulatorWindow::Render(System::Void)
 {
 	wglMakeCurrent(m_hDC, m_hglrc);
 	static float fi = 0;
-	fi = fi + this->speed * 0.01 * 360;
-        speed=exp(1-b*j/m)*time*(sin(10*time)+cos(10*time));
-	float teta = this->angle;
+	//fi = fi + this->speed * 0.01 * 360;
 
-	float teta2 = teta * (tetazero2/ tetazero1);
-	float deltah = (h1 - leng1 * cos(glm::radians(teta) + tetazero1)) + (h2 - leng2 * cos(glm::radians(teta2) + tetazero2));
+	//float teta = this->angle;
+
+
+	float mu = exp(beta * time) *  (c1 * cos(omega * time) + c2 * sin(omega * time)) + fi0 / gamma;
+	//float mu = omega;
+	//mu *= 0.1;
+	float h = h0 - mu;
+	float teta = acos((h * h + leng1 * leng1 - leng2 * leng2) / (2 * h * leng1)) - tetazero1;
+	float teta2 = acos((h * h - leng1 * leng1 + leng2 * leng2) / (2 * h * leng2)) - tetazero2;
+	//teta = mu;
+	speed = 10*mu;
+
+	log_file << mu << "   " << speed << endl;
+	log_file.flush();
+	fi = fi + speed * 0.01 * 360;
+
+	//float teta2 = teta * (tetazero2/ tetazero1);
+	//float deltah = (h1 - leng1 * cos(glm::radians(teta) + tetazero1)) + (h2 - leng2 * cos(glm::radians(teta2) + tetazero2));
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
@@ -227,9 +237,7 @@ System::Void RegulatorWindow::Render(System::Void)
 
 	glPushMatrix();
 	
-	WheelTex.Bind();
-	//glRotated(GetTickCount() % 36000 / 20.f, 0, 1, 0);
-	
+	WheelTex.Bind();	
 	
 	glPushMatrix();
 	glTranslatef(-0.093914, -0.010673, 0);
@@ -246,10 +254,9 @@ System::Void RegulatorWindow::Render(System::Void)
 	PipeBend.Draw();
 	Damper.Draw();
 	Shaft.Draw();
-	//Shutter.Draw();
 
 	glPushMatrix();
-	glTranslatef(0, -deltah, 0);
+	glTranslatef(0, -mu, 0);
 	Shutter.Draw();
 	glPopMatrix();
 
@@ -264,20 +271,20 @@ System::Void RegulatorWindow::Render(System::Void)
 
 	glPushMatrix();
 	glTranslatef(-0.24089, -0.135087, 0.0);
-	glRotatef(teta * cosf(glm::radians(teta)), 0, 0, 1);
+	glRotatef(glm::degrees(/*teta) * cosf(teta)*/atan(mu/ 0.24089)), 0, 0, 1);
 	glTranslatef(0.24089, 0.135087, 0.0);
 	RegLever.Draw();
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0, deltah, 0);
+	glTranslatef(0, mu, 0);
 	RegLeverHolder.Draw();
 	glPopMatrix();
 
 	glRotatef(fi, 0, fi, 0);
 
 	glPushMatrix();
-	glTranslatef(0, deltah, 0);
+	glTranslatef(0, mu, 0);
 	RegClutch.Draw();
 	glPopMatrix();
 
@@ -286,7 +293,7 @@ System::Void RegulatorWindow::Render(System::Void)
 	glPushMatrix();
 	//glRotatef(90, 0, 1, 0);
 	glTranslatef(p1.x, p1.y, p1.z);
-	glRotatef(teta, 0,0,-1);
+	glRotatef(glm::degrees(teta), 0,0,-1);
 	glTranslatef(-p1.x, -p1.y, -p1.z);
 	RegHingeLeftUp.Draw();
 	RegSphereLeft.Draw();
@@ -294,8 +301,8 @@ System::Void RegulatorWindow::Render(System::Void)
 
 	glPushMatrix();
 	//glRotatef(90, 0, 1, 0);
-	glTranslatef(p3.x, p3.y + deltah, p3.z);
-	glRotatef(teta2, 0, 0, 1);
+	glTranslatef(p3.x, p3.y + mu, p3.z);
+	glRotatef(glm::degrees(teta2), 0, 0, 1);
 	glTranslatef(-p3.x, -p3.y, p3.z);
 	RegHingeLeftDown.Draw();
 	glPopMatrix();
@@ -303,7 +310,7 @@ System::Void RegulatorWindow::Render(System::Void)
 	glPushMatrix();
 	//glRotatef(90, 0, 1, 0);
 	glTranslatef(-p1.x, p1.y, p1.z);
-	glRotatef(teta, 0, 0, 1);
+	glRotatef(glm::degrees(teta), 0, 0, 1);
 	glTranslatef(p1.x, -p1.y, -p1.z);
 	RegHingeRightUp.Draw();
 	RegSphereRight.Draw();
@@ -311,16 +318,12 @@ System::Void RegulatorWindow::Render(System::Void)
 
 	glPushMatrix();
 	//glRotatef(90, 0, 1, 0);
-	glTranslatef(-p3.x, p3.y + deltah, p3.z);
-	glRotatef(teta2, 0, 0, -1);
+	glTranslatef(-p3.x, p3.y + mu, p3.z);
+	glRotatef(glm::degrees(teta2), 0, 0, -1);
 	glTranslatef(p3.x, -p3.y, p3.z);
 	RegHingeRightDown.Draw();
 	glPopMatrix();
 
-	
-	//RegSphereRight.Draw();
-
-	//glBindTexture(GL_TEXTURE_2D, 0);
 	MyTexture::UnBind();
 	glPopMatrix();
 	SwapBuffers(m_hDC);

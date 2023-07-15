@@ -6,7 +6,6 @@ using namespace System::Windows::Forms;
 #pragma comment(lib, "gdi32.lib")
 #pragma comment(lib, "User32.lib")
 #pragma comment (lib,"opengl32.lib")
-
 //[STAThread]
 int main()
 {
