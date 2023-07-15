@@ -126,7 +126,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyForm.cpp" />
-    <ClCompile Include="OpenGL.cpp" />
+    <ClCompile Include="RegulatorWindow.cpp" />
+    <ClCompile Include="SpeedGraphWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -134,7 +135,8 @@
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="OpenGL.h" />
+    <ClInclude Include="RegulatorWindow.h" />
+    <ClInclude Include="SpeedGraphWindow.h" />
     <ClInclude Include="TexLoader.h" />
   </ItemGroup>
   <ItemGroup>

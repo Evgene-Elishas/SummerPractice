@@ -1,5 +1,8 @@
 #pragma once
-#include "OpenGL.h"
+#include "RegulatorWindow.h"
+#include "SpeedGraphWindow.h"
+#include <string>
+using namespace std;
 
 namespace Project2 {
 
@@ -15,13 +18,21 @@ namespace Project2 {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-	private: OpenGL^ opengl;
+	private: RegulatorWindow^ RegulatorWindow1;
+	private: System::Windows::Forms::Label^ label16;
+	private: System::Windows::Forms::Label^ label17;
+	private: System::Windows::Forms::Label^ label18;
+	private: System::Windows::Forms::Label^ label19;
+	private: System::Windows::Forms::Label^ label20;
+	private: System::Windows::Forms::Label^ label22;
+	private: SpeedGraphWindow^ SpeedGraphWindow1;
 
 	public:
 		MyForm(void)
 		{
 			InitializeComponent();
-			opengl = gcnew OpenGL(this, 480, 480);
+			RegulatorWindow1 = gcnew RegulatorWindow(this, 480, 480, 40, 32);
+			SpeedGraphWindow1 = gcnew SpeedGraphWindow(this, 420, 200, 600, 350);
 			//
 			//TODO: äîáàâüòå êîä êîíñòðóêòîðà
 			//
@@ -125,6 +136,12 @@ namespace Project2 {
 			this->label13 = (gcnew System::Windows::Forms::Label());
 			this->label14 = (gcnew System::Windows::Forms::Label());
 			this->label15 = (gcnew System::Windows::Forms::Label());
+			this->label16 = (gcnew System::Windows::Forms::Label());
+			this->label17 = (gcnew System::Windows::Forms::Label());
+			this->label18 = (gcnew System::Windows::Forms::Label());
+			this->label19 = (gcnew System::Windows::Forms::Label());
+			this->label20 = (gcnew System::Windows::Forms::Label());
+			this->label22 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -163,7 +180,7 @@ namespace Project2 {
 			resources->ApplyResources(this->hScrollBar3, L"hScrollBar3");
 			this->hScrollBar3->Minimum = 10;
 			this->hScrollBar3->Name = L"hScrollBar3";
-			this->hScrollBar3->Value = 10;
+			this->hScrollBar3->Value = 20;
 			this->hScrollBar3->Scroll += gcnew System::Windows::Forms::ScrollEventHandler(this, &MyForm::hScrollBar3_Scroll_1);
 			// 
 			// label1
@@ -291,10 +308,48 @@ namespace Project2 {
 			this->label15->Name = L"label15";
 			this->label15->Click += gcnew System::EventHandler(this, &MyForm::label15_Click);
 			// 
+			// label16
+			// 
+			resources->ApplyResources(this->label16, L"label16");
+			this->label16->Name = L"label16";
+			// 
+			// label17
+			// 
+			resources->ApplyResources(this->label17, L"label17");
+			this->label17->Name = L"label17";
+			// 
+			// label18
+			// 
+			resources->ApplyResources(this->label18, L"label18");
+			this->label18->Name = L"label18";
+			this->label18->Click += gcnew System::EventHandler(this, &MyForm::label18_Click);
+			// 
+			// label19
+			// 
+			resources->ApplyResources(this->label19, L"label19");
+			this->label19->Name = L"label19";
+			this->label19->Click += gcnew System::EventHandler(this, &MyForm::label19_Click);
+			// 
+			// label20
+			// 
+			resources->ApplyResources(this->label20, L"label20");
+			this->label20->Name = L"label20";
+			// 
+			// label22
+			// 
+			resources->ApplyResources(this->label22, L"label22");
+			this->label22->Name = L"label22";
+			// 
 			// MyForm
 			// 
 			resources->ApplyResources(this, L"$this");
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->Controls->Add(this->label22);
+			this->Controls->Add(this->label20);
+			this->Controls->Add(this->label19);
+			this->Controls->Add(this->label18);
+			this->Controls->Add(this->label17);
+			this->Controls->Add(this->label16);
 			this->Controls->Add(this->label15);
 			this->Controls->Add(this->label14);
 			this->Controls->Add(this->label13);
@@ -341,7 +396,21 @@ private: System::Void textBox1_TextChanged(System::Object^ sender, System::Event
 private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-	opengl->Render();
+	RegulatorWindow1->Render();
+	SpeedGraphWindow1->speed = RegulatorWindow1->speed;
+	SpeedGraphWindow1->Render();
+
+	int time = SpeedGraphWindow1->time;
+	if (time > MAX_COORD_COUNT) {
+		string s1(to_string(time * 0.01 - 10.0)), s2(to_string(time * 0.01));
+		s1.erase(s1.length() - 4);
+		s2.erase(s2.length() - 4);
+		System::String^ str1 = gcnew System::String(s1.c_str());
+		System::String^ str2 = gcnew System::String(s2.c_str());
+		label17->Text = str1;
+		label22->Text = str2;
+	}
+
 }
 private: System::Void âñåãäàToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 }
@@ -351,17 +420,17 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void hScrollBar1_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	this->opengl->yaw = e->NewValue;
+	this->RegulatorWindow1->yaw = e->NewValue;
 }
 private: System::Void hScrollBar2_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	this->opengl->pitch = e->NewValue;
+	this->RegulatorWindow1->pitch = e->NewValue;
 
 }
 private: System::Void hScrollBar3_Scroll_1(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	this->opengl->distance = int(e->NewValue) * 0.05;
+	this->RegulatorWindow1->distance = int(e->NewValue) * 0.05;
 }
 private: System::Void hScrollBar4_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	this->opengl->angle = e->NewValue;
+	this->RegulatorWindow1->angle = e->NewValue;
 }
 private: System::Void label6_Click(System::Object^ sender, System::EventArgs^ e) {
 }
@@ -372,7 +441,11 @@ private: System::Void label10_Click(System::Object^ sender, System::EventArgs^ e
 private: System::Void label15_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void hScrollBar5_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	this->opengl->speed = e->NewValue * 0.01;
+	this->RegulatorWindow1->speed = e->NewValue * 0.01;
+}
+private: System::Void label19_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void label18_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }

@@ -1,4 +1,4 @@
-#include "OpenGL.h"
+#include "RegulatorWindow.h"
 //#include <windows.h>
 //#include <Windowsx.h>
 //#include <GL/gl.h>
@@ -36,7 +36,7 @@ float leng1, h1, tetazero1, leng2, h2, tetazero2;
 
 
 
-bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
+bool RegulatorWindow::InitGL(GLvoid)// инициализация RegulatorWindow
 {
 	log_file.open("log.txt");
 
@@ -96,8 +96,6 @@ bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
 	//glEnable(GL_CULL_FACE);
 	float ambient[4] = { 0.1,0.1,0.1, 1.0 };//цвет и интенсивность фонового освещения
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);//режим фонового освещения
-
-	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	float pos0[4] = { 0,0,5,1 };//положение точечного источника света
 	float amb[4] = { 0,0,0,0 };//цвет и интенсивность
@@ -120,20 +118,20 @@ bool OpenGL::InitGL(GLvoid)// инициализация OpenGL
 }
 
 // функция, вызывающаяся при изменении размеров оьласти вывода 
-GLvoid OpenGL::ReSizeGLScene(GLsizei width, GLsizei height)// Resize and initialise the gl window
+GLvoid RegulatorWindow::ReSizeGLScene(GLsizei width, GLsizei height)// Resize and initialise the gl window
 {
 	Width = width; Height = height;
 	glViewport(0, 0, width, height);
 }
 
 // функция, задающая формат пикселя
-GLint OpenGL::MySetPixelFormat(HDC hdc)
+GLint RegulatorWindow::MySetPixelFormat(HDC hdc)
 {
 	static PIXELFORMATDESCRIPTOR pfd = {
 		sizeof(PIXELFORMATDESCRIPTOR),// Size Of This Pixel Format Descriptor
 		1,// Version Number
 		PFD_DRAW_TO_WINDOW |// Format Must Support Window
-		PFD_SUPPORT_OPENGL |// Format Must Support OpenGL
+		PFD_SUPPORT_OPENGL |// Format Must Support RegulatorWindow
 		PFD_DOUBLEBUFFER,// Must Support Double Buffering
 		PFD_TYPE_RGBA,// Request An RGBA Format
 		16,// Select Our Color Depth
@@ -168,12 +166,12 @@ GLint OpenGL::MySetPixelFormat(HDC hdc)
 }
 
 // конструктор
-OpenGL::OpenGL(System::Windows::Forms::Form^ parentForm, int iWidth, GLsizei iHeight)
+RegulatorWindow::RegulatorWindow(System::Windows::Forms::Form^ parentForm, int iWidth, int iHeight, int iPosX, int iPosY)
 {
 	Width = iWidth; Height = iHeight;
 
 	CreateParams^ cp = gcnew CreateParams;
-	cp->X = 40;  cp->Y = 32;  cp->Height = iHeight;  cp->Width = iWidth;
+	cp->X = iPosX;  cp->Y = iPosY;  cp->Height = iHeight;  cp->Width = iWidth;
 	cp->Parent = parentForm->Handle;
 	cp->Style = WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 	this->CreateHandle(cp);
@@ -185,7 +183,7 @@ OpenGL::OpenGL(System::Windows::Forms::Form^ parentForm, int iWidth, GLsizei iHe
 	}
 }
 
-OpenGL::~OpenGL(System::Void) // деструктор
+RegulatorWindow::~RegulatorWindow(System::Void) // деструктор
 
 {
 	this->DestroyHandle();
@@ -214,8 +212,9 @@ inline void TexturedTransformatedDraw(Mesh m, MyTexture t, void (*f)(void) = NoT
 
 
 // функция рисования
-System::Void OpenGL::Render(System::Void)
+System::Void RegulatorWindow::Render(System::Void)
 {
+	wglMakeCurrent(m_hDC, m_hglrc);
 	static float fi = 0;
 	fi = fi + this->speed * 0.01 * 360;
 
