@@ -396,10 +396,12 @@ private: System::Void textBox1_TextChanged(System::Object^ sender, System::Event
 private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+	RegulatorWindow1->time = SpeedGraphWindow1->time * 0.01;
 	RegulatorWindow1->Render();
 	SpeedGraphWindow1->speed = RegulatorWindow1->speed;
 	SpeedGraphWindow1->Render();
 
+	label18->Text = gcnew System::String(to_string(SpeedGraphWindow1->speed).c_str());
 	int time = SpeedGraphWindow1->time;
 	if (time > MAX_COORD_COUNT) {
 		string s1(to_string(time * 0.01 - 10.0)), s2(to_string(time * 0.01));
