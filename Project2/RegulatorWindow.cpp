@@ -36,7 +36,7 @@ float leng1, h1, tetazero1, leng2, h2, tetazero2;
 
 
 
-bool RegulatorWindow::InitGL(GLvoid)// èíèöèàëèçàöèÿ RegulatorWindow
+bool RegulatorWindow::InitGL(GLvoid)// Ã¨Ã­Ã¨Ã¶Ã¨Ã Ã«Ã¨Ã§Ã Ã¶Ã¨Ã¿ RegulatorWindow
 {
 	log_file.open("log.txt");
 
@@ -91,40 +91,40 @@ bool RegulatorWindow::InitGL(GLvoid)// èíèöèàëèçàöèÿ RegulatorWindow
 	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	glEnable(GL_NORMALIZE);
-	glEnable(GL_COLOR_MATERIAL);//Ðàçðåøàåì èñïîëüçîâàòü öâåòíîé ìàòåðèàë
-	glEnable(GL_LIGHTING);	//ðàçðåøàåì îñâåùåíèå
+	glEnable(GL_COLOR_MATERIAL);//ÃÃ Ã§Ã°Ã¥Ã¸Ã Ã¥Ã¬ Ã¨Ã±Ã¯Ã®Ã«Ã¼Ã§Ã®Ã¢Ã Ã²Ã¼ Ã¶Ã¢Ã¥Ã²Ã­Ã®Ã© Ã¬Ã Ã²Ã¥Ã°Ã¨Ã Ã«
+	glEnable(GL_LIGHTING);	//Ã°Ã Ã§Ã°Ã¥Ã¸Ã Ã¥Ã¬ Ã®Ã±Ã¢Ã¥Ã¹Ã¥Ã­Ã¨Ã¥
 	//glEnable(GL_CULL_FACE);
-	float ambient[4] = { 0.1,0.1,0.1, 1.0 };//öâåò è èíòåíñèâíîñòü ôîíîâîãî îñâåùåíèÿ
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);//ðåæèì ôîíîâîãî îñâåùåíèÿ
+	float ambient[4] = { 0.1,0.1,0.1, 1.0 };//Ã¶Ã¢Ã¥Ã² Ã¨ Ã¨Ã­Ã²Ã¥Ã­Ã±Ã¨Ã¢Ã­Ã®Ã±Ã²Ã¼ Ã´Ã®Ã­Ã®Ã¢Ã®Ã£Ã® Ã®Ã±Ã¢Ã¥Ã¹Ã¥Ã­Ã¨Ã¿
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);//Ã°Ã¥Ã¦Ã¨Ã¬ Ã´Ã®Ã­Ã®Ã¢Ã®Ã£Ã® Ã®Ã±Ã¢Ã¥Ã¹Ã¥Ã­Ã¨Ã¿
 	glEnable(GL_LIGHT0);
-	float pos0[4] = { 0,0,5,1 };//ïîëîæåíèå òî÷å÷íîãî èñòî÷íèêà ñâåòà
-	float amb[4] = { 0,0,0,0 };//öâåò è èíòåíñèâíîñòü
-	float color0[4] = { 1,1,1,1 };//öâåò è èíòåíñèâíîñòü èñòî÷íèêà ñâåòà
-	float color_sp[4] = { 1,1,1,1 };//öâåò çåðêàëüíîãî èñòî÷íèêà ñâåòà
-	glLightfv(GL_LIGHT0, GL_POSITION, pos0);//ïîëîæåíèå íóëåâîé ëàìïû
+	float pos0[4] = { 0,0,5,1 };//Ã¯Ã®Ã«Ã®Ã¦Ã¥Ã­Ã¨Ã¥ Ã²Ã®Ã·Ã¥Ã·Ã­Ã®Ã£Ã® Ã¨Ã±Ã²Ã®Ã·Ã­Ã¨ÃªÃ  Ã±Ã¢Ã¥Ã²Ã 
+	float amb[4] = { 0,0,0,0 };//Ã¶Ã¢Ã¥Ã² Ã¨ Ã¨Ã­Ã²Ã¥Ã­Ã±Ã¨Ã¢Ã­Ã®Ã±Ã²Ã¼
+	float color0[4] = { 1,1,1,1 };//Ã¶Ã¢Ã¥Ã² Ã¨ Ã¨Ã­Ã²Ã¥Ã­Ã±Ã¨Ã¢Ã­Ã®Ã±Ã²Ã¼ Ã¨Ã±Ã²Ã®Ã·Ã­Ã¨ÃªÃ  Ã±Ã¢Ã¥Ã²Ã 
+	float color_sp[4] = { 1,1,1,1 };//Ã¶Ã¢Ã¥Ã² Ã§Ã¥Ã°ÃªÃ Ã«Ã¼Ã­Ã®Ã£Ã® Ã¨Ã±Ã²Ã®Ã·Ã­Ã¨ÃªÃ  Ã±Ã¢Ã¥Ã²Ã 
+	glLightfv(GL_LIGHT0, GL_POSITION, pos0);//Ã¯Ã®Ã«Ã®Ã¦Ã¥Ã­Ã¨Ã¥ Ã­Ã³Ã«Ã¥Ã¢Ã®Ã© Ã«Ã Ã¬Ã¯Ã»
 	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, color0);//òèï îñâåùåíèÿ GL_DIFFUSE, öâåò íóëåâîé ëàìïû color0
-	glLightfv(GL_LIGHT0, GL_SPECULAR, color_sp);//äëÿ GL_LIGHT0 óñòàíîâëåíî ïî óìîë÷àíèþ
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, color0);//Ã²Ã¨Ã¯ Ã®Ã±Ã¢Ã¥Ã¹Ã¥Ã­Ã¨Ã¿ GL_DIFFUSE, Ã¶Ã¢Ã¥Ã² Ã­Ã³Ã«Ã¥Ã¢Ã®Ã© Ã«Ã Ã¬Ã¯Ã» color0
+	glLightfv(GL_LIGHT0, GL_SPECULAR, color_sp);//Ã¤Ã«Ã¿ GL_LIGHT0 Ã³Ã±Ã²Ã Ã­Ã®Ã¢Ã«Ã¥Ã­Ã® Ã¯Ã® Ã³Ã¬Ã®Ã«Ã·Ã Ã­Ã¨Ã¾
 
 	/*glEnable(GL_LIGHT1);
-	float pos1[4] = { 0,0,-5,1 };//ïîëîæåíèå òî÷å÷íîãî èñòî÷íèêà ñâåòà
-	glLightfv(GL_LIGHT1, GL_POSITION, pos1);//ïîëîæåíèå íóëåâîé ëàìïû
+	float pos1[4] = { 0,0,-5,1 };//Ã¯Ã®Ã«Ã®Ã¦Ã¥Ã­Ã¨Ã¥ Ã²Ã®Ã·Ã¥Ã·Ã­Ã®Ã£Ã® Ã¨Ã±Ã²Ã®Ã·Ã­Ã¨ÃªÃ  Ã±Ã¢Ã¥Ã²Ã 
+	glLightfv(GL_LIGHT1, GL_POSITION, pos1);//Ã¯Ã®Ã«Ã®Ã¦Ã¥Ã­Ã¨Ã¥ Ã­Ã³Ã«Ã¥Ã¢Ã®Ã© Ã«Ã Ã¬Ã¯Ã»
 	glLightfv(GL_LIGHT1, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, color0);//òèï îñâåùåíèÿ GL_DIFFUSE, öâåò íóëåâîé ëàìïû color0
-	glLightfv(GL_LIGHT1, GL_SPECULAR, color_sp);//äëÿ GL_LIGHT0 óñòàíîâëåíî ïî óìîë÷àíèþ*/
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, color0);//Ã²Ã¨Ã¯ Ã®Ã±Ã¢Ã¥Ã¹Ã¥Ã­Ã¨Ã¿ GL_DIFFUSE, Ã¶Ã¢Ã¥Ã² Ã­Ã³Ã«Ã¥Ã¢Ã®Ã© Ã«Ã Ã¬Ã¯Ã» color0
+	glLightfv(GL_LIGHT1, GL_SPECULAR, color_sp);//Ã¤Ã«Ã¿ GL_LIGHT0 Ã³Ã±Ã²Ã Ã­Ã®Ã¢Ã«Ã¥Ã­Ã® Ã¯Ã® Ã³Ã¬Ã®Ã«Ã·Ã Ã­Ã¨Ã¾*/
 
 
 	return TRUE;
 }
 
-// ôóíêöèÿ, âûçûâàþùàÿñÿ ïðè èçìåíåíèè ðàçìåðîâ îüëàñòè âûâîäà 
+// Ã´Ã³Ã­ÃªÃ¶Ã¨Ã¿, Ã¢Ã»Ã§Ã»Ã¢Ã Ã¾Ã¹Ã Ã¿Ã±Ã¿ Ã¯Ã°Ã¨ Ã¨Ã§Ã¬Ã¥Ã­Ã¥Ã­Ã¨Ã¨ Ã°Ã Ã§Ã¬Ã¥Ã°Ã®Ã¢ Ã®Ã¼Ã«Ã Ã±Ã²Ã¨ Ã¢Ã»Ã¢Ã®Ã¤Ã  
 GLvoid RegulatorWindow::ReSizeGLScene(GLsizei width, GLsizei height)// Resize and initialise the gl window
 {
 	Width = width; Height = height;
 	glViewport(0, 0, width, height);
 }
 
-// ôóíêöèÿ, çàäàþùàÿ ôîðìàò ïèêñåëÿ
+// Ã´Ã³Ã­ÃªÃ¶Ã¨Ã¿, Ã§Ã Ã¤Ã Ã¾Ã¹Ã Ã¿ Ã´Ã®Ã°Ã¬Ã Ã² Ã¯Ã¨ÃªÃ±Ã¥Ã«Ã¿
 GLint RegulatorWindow::MySetPixelFormat(HDC hdc)
 {
 	static PIXELFORMATDESCRIPTOR pfd = {
@@ -165,7 +165,7 @@ GLint RegulatorWindow::MySetPixelFormat(HDC hdc)
 	return 1;
 }
 
-// êîíñòðóêòîð
+// ÃªÃ®Ã­Ã±Ã²Ã°Ã³ÃªÃ²Ã®Ã°
 RegulatorWindow::RegulatorWindow(System::Windows::Forms::Form^ parentForm, int iWidth, int iHeight, int iPosX, int iPosY)
 {
 	Width = iWidth; Height = iHeight;
@@ -183,7 +183,7 @@ RegulatorWindow::RegulatorWindow(System::Windows::Forms::Form^ parentForm, int i
 	}
 }
 
-RegulatorWindow::~RegulatorWindow(System::Void) // äåñòðóêòîð
+RegulatorWindow::~RegulatorWindow(System::Void) // Ã¤Ã¥Ã±Ã²Ã°Ã³ÃªÃ²Ã®Ã°
 
 {
 	this->DestroyHandle();
@@ -211,13 +211,14 @@ inline void TexturedTransformatedDraw(Mesh m, MyTexture t, void (*f)(void) = NoT
 }
 
 
-// ôóíêöèÿ ðèñîâàíèÿ
+// Ã´Ã³Ã­ÃªÃ¶Ã¨Ã¿ Ã°Ã¨Ã±Ã®Ã¢Ã Ã­Ã¨Ã¿
+float b=2,m=1,j=1;
 System::Void RegulatorWindow::Render(System::Void)
 {
 	wglMakeCurrent(m_hDC, m_hglrc);
 	static float fi = 0;
 	fi = fi + this->speed * 0.01 * 360;
-
+        speed=exp(1-b*j/m)*time*(sin(10*time)+cos(10*time));
 	float teta = this->angle;
 
 	float teta2 = teta * (tetazero2/ tetazero1);
