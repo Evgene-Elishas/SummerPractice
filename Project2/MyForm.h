@@ -14,7 +14,7 @@ namespace Project2 {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Ñâîäêà äëÿ MyForm
+	/// Сводка для MyForm
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
@@ -34,13 +34,13 @@ namespace Project2 {
 			RegulatorWindow1 = gcnew RegulatorWindow(this, 480, 480, 40, 32);
 			SpeedGraphWindow1 = gcnew SpeedGraphWindow(this, 420, 200, 600, 350);
 			//
-			//TODO: äîáàâüòå êîä êîíñòðóêòîðà
+			//TODO: добавьте код конструктора
 			//
 		}
 
 	protected:
 		/// <summary>
-		/// Îñâîáîäèòü âñå èñïîëüçóåìûå ðåñóðñû.
+		/// Освободить все используемые ресурсы.
 		/// </summary>
 		~MyForm()
 		{
@@ -98,14 +98,14 @@ namespace Project2 {
 
 	private:
 		/// <summary>
-		/// Îáÿçàòåëüíàÿ ïåðåìåííàÿ êîíñòðóêòîðà.
+		/// Обязательная переменная конструктора.
 		/// </summary>
 
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Òðåáóåìûé ìåòîä äëÿ ïîääåðæêè êîíñòðóêòîðà — íå èçìåíÿéòå 
-		/// ñîäåðæèìîå ýòîãî ìåòîäà ñ ïîìîùüþ ðåäàêòîðà êîäà.
+		/// Требуемый метод для поддержки конструктора — не изменяйте 
+		/// содержимое этого метода с помощью редактора кода.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -414,7 +414,7 @@ private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
 	}
 
 }
-private: System::Void âñåãäàToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+private: System::Void всегдаToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	Close();
