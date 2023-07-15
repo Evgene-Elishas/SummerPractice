@@ -11,13 +11,6 @@ ofstream log_file;
 #include "Item.h"
 #include "Camera.h"
 
-
-
-#pragma comment(lib, "glu32.lib")
-#pragma comment(lib, "gdi32.lib")
-#pragma comment(lib, "User32.lib")
-#pragma comment (lib,"opengl32.lib")
-
 using namespace System::Windows::Forms;
 int Width, Height;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.5f)); 
