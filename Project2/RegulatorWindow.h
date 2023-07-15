@@ -11,8 +11,10 @@ private:
 	HDC m_hDC;
 	HGLRC m_hglrc;
 public:
-	float time;
-	float yaw = 0.0f, pitch = 0.0f, distance = 1.0f, angle = 0.0f, speed = 0.6f;
+	bool IsStopped = TRUE;
+	float time, angle = 0;
+	float yaw = 0.0f, pitch = 0.0f, distance = 1.0f, /*angle_fi = 0.0f, */speed = 0.6f;
+	float fi0 = 0.342214, mu0 = 0, mu0der = 0, Tr_sqr = 0.25, Tk = 0.5, gamma = 3.5;
 	RegulatorWindow(System::Windows::Forms::Form^ parentForm, int iWidth, int iHeight, int iPosX, int iPosY);
 
 	System::Void Render(System::Void);

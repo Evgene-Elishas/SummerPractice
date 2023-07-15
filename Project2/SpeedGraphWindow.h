@@ -20,6 +20,7 @@ public:
 	void Pop();
 	void Update(float y, int time);
 	void Draw(int time);
+	void Clear();
 };
 
 
@@ -29,6 +30,7 @@ private:
 	HDC m_hDC;
 	HGLRC m_hglrc;
 public:
+	bool IsStopped = TRUE;
 	int time = 0;  // seconds * fps(100)
 	CoordList coordlist;
 	float speed;

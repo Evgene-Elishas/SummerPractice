@@ -20,8 +20,6 @@ Mesh Wheel, Pipe1, Pipe2, Pipe3, PipeBend, Damper, Reductor, Shaft, Shutter, Eng
 Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, 
 	RegHingeLeftDown, RegHingeRightDown, RegHingeRightUp, RegHingeLeftUp, RegSphereLeft, RegSphereRight;
 
-//(-0.051844, -0.025269, -0.000312);
-//(-0.051272, 0.433437, -0.000027);
 #define M_PI        3.14159265358979323846264338327950288   /* pi */
 glm::vec3 p1(-0.051272, 0.433437, -0.000027), p2(-0.126626, 0.221905, -0.221905), p3(-0.051844, -0.025269, -0.000312);
 glm::vec2 p1f(-0.051272, 0.433437), p2f(-0.126626, 0.221905), p3f(-0.051844, -0.025269);
@@ -33,14 +31,6 @@ float leng1 = glm::length(p1f - p2f), h1 = p1f.y - p2f.y, tetazero1 = acosf(h1 /
 bool RegulatorWindow::InitGL(GLvoid)// инициализация RegulatorWindow
 {
 	log_file.open("log.txt");
-
-	leng1 = glm::length(p1f - p2f);
-	h1 = p1f.y - p2f.y;
-	tetazero1 = acosf(h1 / leng1);
-
-	leng2 = glm::length(p2f - p3f);
-	h2 = p2f.y - p3f.y;
-	tetazero2 = acosf(h2 / leng2);
 	
 	log_file << leng1 << " " << h1 << " " << glm::degrees(tetazero1) << endl << leng2 << " " << h2 << " " << glm::degrees(tetazero2) << endl << h0 << endl;
 	log_file.flush();
@@ -73,9 +63,6 @@ bool RegulatorWindow::InitGL(GLvoid)// инициализация RegulatorWindo
 	RegSphereLeft.Load(".objects/RegSphereLeft.obj");
 	RegSphereRight.Load(".objects/RegSphereRight.obj");
 
-	
-	
-	
 	//glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
@@ -193,36 +180,41 @@ void SetProjectionMatrix(Camera& cam) {
 }
 
 
-float fi0 = tetazero1, mu0 = 0, mu0der = 0, Tr = 0.5, Tk = 0.5, gamma = 3.5;
-
-
-float beta = -1;// -Tk / (2 * Tr * Tr);
-float omega = 0.5; //sqrt(Tk * Tk - 4 * gamma * Tr * Tr) / (2 * Tr * Tr);
-float c1 = mu0 - fi0 / gamma;
-float c2 = mu0der / omega - beta / omega * c1;
-
 // функция рисования
 System::Void RegulatorWindow::Render(System::Void)
 {
 	wglMakeCurrent(m_hDC, m_hglrc);
-	static float fi = 0;
 	//fi = fi + this->speed * 0.01 * 360;
-
 	//float teta = this->angle;
+	static float mu, teta, teta2;
 
+	if (!IsStopped) {
+		if (Tk * Tk - 4 * gamma * Tr_sqr < 0) {
+			float beta = -Tk / (2 * Tr_sqr);
+			float omega = sqrt(-Tk * Tk + 4 * gamma * Tr_sqr) / (2 * Tr_sqr);
+			float c1 = mu0 - fi0 / gamma;
+			float c2 = mu0der / omega - beta / omega * c1;
+			mu = exp(beta * time) * (c1 * cos(omega * time) + c2 * sin(omega * time)) + fi0 / gamma;
+		}
+		else {
+			float beta = -Tk / (2 * Tr_sqr);
+			float omega = sqrt(Tk * Tk - 4 * gamma * Tr_sqr) / (2 * Tr_sqr);
+			float lambda1 = beta + omega, lambda2 = beta - omega;
+			float c1 = ((mu0 - fi0 / gamma) * lambda2 - mu0der) * -0.5 / omega; // ((mu0 - fi0 / gamma)*lambda2 - mu0der) / (lambda2 - lambda1)
+			float c2 = (mu0der - (mu0 - fi0 / gamma) * lambda1) * -0.5 / omega; // (mu0der - (mu0 - fi0 / gamma)*lambda1) / (lambda2 - lambda1)
+			mu = c1 * exp(lambda1 * time) * c2 * exp(lambda2 * time) * fi0 / gamma;
+		}
 
-	float mu = exp(beta * time) *  (c1 * cos(omega * time) + c2 * sin(omega * time)) + fi0 / gamma;
-	//float mu = omega;
-	//mu *= 0.1;
-	float h = h0 - mu;
-	float teta = acos((h * h + leng1 * leng1 - leng2 * leng2) / (2 * h * leng1)) - tetazero1;
-	float teta2 = acos((h * h - leng1 * leng1 + leng2 * leng2) / (2 * h * leng2)) - tetazero2;
+		//float mu = omega;
+		//mu *= 0.1;
+		float h = h0 - mu;
+		teta = acos((h * h + leng1 * leng1 - leng2 * leng2) / (2 * h * leng1)) - tetazero1;
+		teta2 = acos((h * h - leng1 * leng1 + leng2 * leng2) / (2 * h * leng2)) - tetazero2;
+		speed = 10 * mu;
+		angle += speed * 0.01 * 360;
+	}
 	//teta = mu;
-	speed = 10*mu;
-
-	log_file << mu << "   " << speed << endl;
-	log_file.flush();
-	fi = fi + speed * 0.01 * 360;
+	
 
 	//float teta2 = teta * (tetazero2/ tetazero1);
 	//float deltah = (h1 - leng1 * cos(glm::radians(teta) + tetazero1)) + (h2 - leng2 * cos(glm::radians(teta2) + tetazero2));
@@ -241,7 +233,7 @@ System::Void RegulatorWindow::Render(System::Void)
 	
 	glPushMatrix();
 	glTranslatef(-0.093914, -0.010673, 0);
-	glRotatef(fi, 1, 0, 0);
+	glRotatef(angle, 1, 0, 0);
 	glTranslatef(0.093914, 0.010673, 0);
 	Wheel.Draw();
 	glPopMatrix();
@@ -271,7 +263,7 @@ System::Void RegulatorWindow::Render(System::Void)
 
 	glPushMatrix();
 	glTranslatef(-0.24089, -0.135087, 0.0);
-	glRotatef(glm::degrees(/*teta) * cosf(teta)*/atan(mu/ 0.24089)), 0, 0, 1);
+	glRotatef(glm::degrees(/*teta) * cosf(teta)*/atan(mu/ 0.24089))*1.1, 0, 0, 1);
 	glTranslatef(0.24089, 0.135087, 0.0);
 	RegLever.Draw();
 	glPopMatrix();
@@ -281,7 +273,7 @@ System::Void RegulatorWindow::Render(System::Void)
 	RegLeverHolder.Draw();
 	glPopMatrix();
 
-	glRotatef(fi, 0, fi, 0);
+	glRotatef(angle, 0, 1, 0);
 
 	glPushMatrix();
 	glTranslatef(0, mu, 0);
@@ -291,7 +283,6 @@ System::Void RegulatorWindow::Render(System::Void)
 	RegShaft.Draw();
 	
 	glPushMatrix();
-	//glRotatef(90, 0, 1, 0);
 	glTranslatef(p1.x, p1.y, p1.z);
 	glRotatef(glm::degrees(teta), 0,0,-1);
 	glTranslatef(-p1.x, -p1.y, -p1.z);
@@ -300,7 +291,6 @@ System::Void RegulatorWindow::Render(System::Void)
 	glPopMatrix();
 
 	glPushMatrix();
-	//glRotatef(90, 0, 1, 0);
 	glTranslatef(p3.x, p3.y + mu, p3.z);
 	glRotatef(glm::degrees(teta2), 0, 0, 1);
 	glTranslatef(-p3.x, -p3.y, p3.z);
@@ -308,7 +298,6 @@ System::Void RegulatorWindow::Render(System::Void)
 	glPopMatrix();
 
 	glPushMatrix();
-	//glRotatef(90, 0, 1, 0);
 	glTranslatef(-p1.x, p1.y, p1.z);
 	glRotatef(glm::degrees(teta), 0, 0, 1);
 	glTranslatef(p1.x, -p1.y, -p1.z);
@@ -317,7 +306,6 @@ System::Void RegulatorWindow::Render(System::Void)
 	glPopMatrix();
 
 	glPushMatrix();
-	//glRotatef(90, 0, 1, 0);
 	glTranslatef(-p3.x, p3.y + mu, p3.z);
 	glRotatef(glm::degrees(teta2), 0, 0, -1);
 	glTranslatef(p3.x, -p3.y, p3.z);
@@ -327,4 +315,5 @@ System::Void RegulatorWindow::Render(System::Void)
 	MyTexture::UnBind();
 	glPopMatrix();
 	SwapBuffers(m_hDC);
+	
 }

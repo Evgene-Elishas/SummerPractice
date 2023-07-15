@@ -36,6 +36,16 @@ void CoordList::Draw(int time) {
 	glEnd();
 	glPopMatrix();
 }
+void CoordList::Clear() {
+	Head = Tail;
+	while (Head) {
+		Head = Head->next;
+		delete Tail;
+		Tail = Head;
+	}
+	//if (Tail) delete Tail;
+	//Head = Tail = NULL;
+}
 
 
 using namespace System::Windows::Forms;
@@ -46,7 +56,7 @@ bool SpeedGraphWindow::InitGL(GLvoid)// инициализация SpeedGraphWindow
 	glClearDepth(1.0f);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, 1.0, -1.0, 1.0);
+	gluOrtho2D(0.0, 1.0, 0.0, 5.0);
 	glMatrixMode(GL_MODELVIEW);
 
 	return TRUE;
@@ -117,16 +127,16 @@ SpeedGraphWindow::~SpeedGraphWindow(System::Void) // деструктор
 // функция рисования
 System::Void SpeedGraphWindow::Render(System::Void)
 {
-	time++;
 	wglMakeCurrent(m_hDC, m_hglrc);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	float minspead = 0.4, maxspead = 2.0;
-	//float y = (speed - minspead) / (maxspead - minspead);
-	float y = (speed - 1) / (maxspead - minspead);
-	coordlist.Update(y, time);
+	if (!IsStopped) {
+		time++;
+		float minspead = 0.4, maxspead = 2.0;
+		//float y = (speed - minspead) / (maxspead - minspead);
+		float y = speed;
+		coordlist.Update(y, time);
+
+	}
 	coordlist.Draw(time);
-
-
 	SwapBuffers(m_hDC);
 }
