@@ -20,7 +20,6 @@ Mesh Wheel, Pipe1, Pipe2, Pipe3, PipeBend, Damper, Reductor, Shaft, Shutter, Eng
 Mesh RegStand, RegShaft, RegLever, RegLeverHolder, RegClutch, 
 	RegHingeLeftDown, RegHingeRightDown, RegHingeRightUp, RegHingeLeftUp, RegSphereLeft, RegSphereRight;
 
-#define M_PI        3.14159265358979323846264338327950288   /* pi */
 glm::vec3 p1(-0.051272, 0.433437, -0.000027), p2(-0.126626, 0.221905, -0.221905), p3(-0.051844, -0.025269, -0.000312);
 glm::vec2 p1f(-0.051272, 0.433437), p2f(-0.126626, 0.221905), p3f(-0.051844, -0.025269);
 float leng1 = glm::length(p1f - p2f), h1 = p1f.y - p2f.y, tetazero1 = acosf(h1 / leng1), 
@@ -202,7 +201,7 @@ System::Void RegulatorWindow::Render(System::Void)
 			float lambda1 = beta + omega, lambda2 = beta - omega;
 			float c1 = ((mu0 - fi0 / gamma) * lambda2 - mu0der) * -0.5 / omega; // ((mu0 - fi0 / gamma)*lambda2 - mu0der) / (lambda2 - lambda1)
 			float c2 = (mu0der - (mu0 - fi0 / gamma) * lambda1) * -0.5 / omega; // (mu0der - (mu0 - fi0 / gamma)*lambda1) / (lambda2 - lambda1)
-			mu = c1 * exp(lambda1 * time) * c2 * exp(lambda2 * time) * fi0 / gamma;
+			mu = c1 * exp(lambda1 * time) + c2 * exp(lambda2 * time) + fi0 / gamma;
 		}
 
 		//float mu = omega;

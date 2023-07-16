@@ -33,7 +33,7 @@ public:
 	bool IsStopped = TRUE;
 	int time = 0;  // seconds * fps(100)
 	CoordList coordlist;
-	float speed;
+	float speed, shift;
 	SpeedGraphWindow(System::Windows::Forms::Form^ parentForm, int iWidth, int iHeight, int iPosX, int iPosY);
 
 	System::Void Render(System::Void);

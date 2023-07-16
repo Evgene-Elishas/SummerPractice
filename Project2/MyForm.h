@@ -41,6 +41,8 @@ namespace Project2 {
 	private: System::Windows::Forms::TextBox^ textBox5;
 	private: System::Windows::Forms::TextBox^ textBox6;
 	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::Label^ label28;
+
 	private: SpeedGraphWindow^ SpeedGraphWindow1;
 
 	public:
@@ -90,20 +92,20 @@ namespace Project2 {
 
 
 	private: System::Windows::Forms::Button^ button1;
-	private: System::Windows::Forms::Label^ label4;
-	private: System::Windows::Forms::HScrollBar^ hScrollBar4;
-	private: System::Windows::Forms::HScrollBar^ hScrollBar5;
-	private: System::Windows::Forms::Label^ label5;
+
+
+
+
 	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::Label^ label7;
-	private: System::Windows::Forms::Label^ label8;
+
 	private: System::Windows::Forms::Label^ label9;
 	private: System::Windows::Forms::Label^ label10;
 	private: System::Windows::Forms::Label^ label11;
 	private: System::Windows::Forms::Label^ label12;
-	private: System::Windows::Forms::Label^ label13;
-	private: System::Windows::Forms::Label^ label14;
-	private: System::Windows::Forms::Label^ label15;
+
+
+
 
 
 
@@ -136,20 +138,12 @@ namespace Project2 {
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->hScrollBar4 = (gcnew System::Windows::Forms::HScrollBar());
-			this->hScrollBar5 = (gcnew System::Windows::Forms::HScrollBar());
-			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->label7 = (gcnew System::Windows::Forms::Label());
-			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->label10 = (gcnew System::Windows::Forms::Label());
 			this->label11 = (gcnew System::Windows::Forms::Label());
 			this->label12 = (gcnew System::Windows::Forms::Label());
-			this->label13 = (gcnew System::Windows::Forms::Label());
-			this->label14 = (gcnew System::Windows::Forms::Label());
-			this->label15 = (gcnew System::Windows::Forms::Label());
 			this->label16 = (gcnew System::Windows::Forms::Label());
 			this->label17 = (gcnew System::Windows::Forms::Label());
 			this->label18 = (gcnew System::Windows::Forms::Label());
@@ -169,6 +163,7 @@ namespace Project2 {
 			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox6 = (gcnew System::Windows::Forms::TextBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->label28 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -236,36 +231,6 @@ namespace Project2 {
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
-			// label4
-			// 
-			resources->ApplyResources(this->label4, L"label4");
-			this->label4->Name = L"label4";
-			// 
-			// hScrollBar4
-			// 
-			this->hScrollBar4->Cursor = System::Windows::Forms::Cursors::Hand;
-			resources->ApplyResources(this->hScrollBar4, L"hScrollBar4");
-			this->hScrollBar4->LargeChange = 7;
-			this->hScrollBar4->Maximum = 70;
-			this->hScrollBar4->Name = L"hScrollBar4";
-			this->hScrollBar4->Scroll += gcnew System::Windows::Forms::ScrollEventHandler(this, &MyForm::hScrollBar4_Scroll);
-			// 
-			// hScrollBar5
-			// 
-			this->hScrollBar5->Cursor = System::Windows::Forms::Cursors::Hand;
-			resources->ApplyResources(this->hScrollBar5, L"hScrollBar5");
-			this->hScrollBar5->LargeChange = 16;
-			this->hScrollBar5->Maximum = 200;
-			this->hScrollBar5->Minimum = 40;
-			this->hScrollBar5->Name = L"hScrollBar5";
-			this->hScrollBar5->Value = 60;
-			this->hScrollBar5->Scroll += gcnew System::Windows::Forms::ScrollEventHandler(this, &MyForm::hScrollBar5_Scroll);
-			// 
-			// label5
-			// 
-			resources->ApplyResources(this->label5, L"label5");
-			this->label5->Name = L"label5";
-			// 
 			// label6
 			// 
 			resources->ApplyResources(this->label6, L"label6");
@@ -275,11 +240,6 @@ namespace Project2 {
 			// 
 			resources->ApplyResources(this->label7, L"label7");
 			this->label7->Name = L"label7";
-			// 
-			// label8
-			// 
-			resources->ApplyResources(this->label8, L"label8");
-			this->label8->Name = L"label8";
 			// 
 			// label9
 			// 
@@ -300,21 +260,6 @@ namespace Project2 {
 			// 
 			resources->ApplyResources(this->label12, L"label12");
 			this->label12->Name = L"label12";
-			// 
-			// label13
-			// 
-			resources->ApplyResources(this->label13, L"label13");
-			this->label13->Name = L"label13";
-			// 
-			// label14
-			// 
-			resources->ApplyResources(this->label14, L"label14");
-			this->label14->Name = L"label14";
-			// 
-			// label15
-			// 
-			resources->ApplyResources(this->label15, L"label15");
-			this->label15->Name = L"label15";
 			// 
 			// label16
 			// 
@@ -350,6 +295,7 @@ namespace Project2 {
 			// 
 			resources->ApplyResources(this->textBox1, L"textBox1");
 			this->textBox1->Name = L"textBox1";
+			this->textBox1->TextChanged += gcnew System::EventHandler(this, &MyForm::textBox1_TextChanged);
 			// 
 			// textBox2
 			// 
@@ -413,10 +359,16 @@ namespace Project2 {
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
+			// label28
+			// 
+			resources->ApplyResources(this->label28, L"label28");
+			this->label28->Name = L"label28";
+			// 
 			// MyForm
 			// 
 			resources->ApplyResources(this, L"$this");
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->Controls->Add(this->label28);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->label26);
 			this->Controls->Add(this->label27);
@@ -436,20 +388,12 @@ namespace Project2 {
 			this->Controls->Add(this->label18);
 			this->Controls->Add(this->label17);
 			this->Controls->Add(this->label16);
-			this->Controls->Add(this->label15);
-			this->Controls->Add(this->label14);
-			this->Controls->Add(this->label13);
 			this->Controls->Add(this->label12);
 			this->Controls->Add(this->label11);
 			this->Controls->Add(this->label10);
 			this->Controls->Add(this->label9);
-			this->Controls->Add(this->label8);
 			this->Controls->Add(this->label7);
 			this->Controls->Add(this->label6);
-			this->Controls->Add(this->hScrollBar5);
-			this->Controls->Add(this->label5);
-			this->Controls->Add(this->hScrollBar4);
-			this->Controls->Add(this->label4);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
@@ -498,12 +442,6 @@ private: System::Void hScrollBar2_Scroll(System::Object^ sender, System::Windows
 private: System::Void hScrollBar3_Scroll_1(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
 	this->RegulatorWindow1->distance = int(e->NewValue) * 0.05;
 }
-private: System::Void hScrollBar4_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	//this->RegulatorWindow1->angle_fi = e->NewValue;
-}
-private: System::Void hScrollBar5_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	this->RegulatorWindow1->speed = e->NewValue * 0.01;
-}
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	RegulatorWindow1->fi0 = Convert::ToDouble(this->textBox1->Text);
 	RegulatorWindow1->mu0 = Convert::ToDouble(this->textBox2->Text);
@@ -511,6 +449,12 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	RegulatorWindow1->Tr_sqr = Convert::ToDouble(this->textBox6->Text);
 	RegulatorWindow1->Tk = Convert::ToDouble(this->textBox5->Text);
 	RegulatorWindow1->gamma = Convert::ToDouble(this->textBox4->Text);
+
+	SpeedGraphWindow1->shift = RegulatorWindow1->fi0 / RegulatorWindow1->gamma;
+
+	label16->Text = Convert::ToString((5 - SpeedGraphWindow1->shift) * 2 * M_PI)->Remove(6);
+	label20->Text = Convert::ToString((-5 - SpeedGraphWindow1->shift) * 2 * M_PI)->Remove(6);
+
 	SpeedGraphWindow1->IsStopped = FALSE;
 	RegulatorWindow1->IsStopped = FALSE;
 	label17->Text = "0";
@@ -525,6 +469,11 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 	//RegulatorWindow1->IsStopped = TRUE;
 	SpeedGraphWindow1->IsStopped = !SpeedGraphWindow1->IsStopped;
 	RegulatorWindow1->IsStopped = !RegulatorWindow1->IsStopped;
+}
+private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	double temp = Convert::ToDouble(this->textBox1->Text);
+	//if
+
 }
 };
 }
