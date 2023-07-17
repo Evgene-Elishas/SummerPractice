@@ -1,11 +1,8 @@
 #include "SpeedGraphWindow.h"
 //#include <windows.h>
 //#include <Windowsx.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
 
 #define X_SHIFT  (1.0 / MAX_COORD_COUNT)
-
 
 void CoordList::Push(float x, float y) {
 	if (Tail) {
@@ -56,7 +53,7 @@ bool SpeedGraphWindow::InitGL(GLvoid)// инициализация SpeedGraphWindow
 	glClearDepth(1.0f);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, 1.0, -15.0, 15.0);
+	gluOrtho2D(0.0, 1.0, -5.0, 5.0);
 	glMatrixMode(GL_MODELVIEW);
 
 	return TRUE;
@@ -119,8 +116,8 @@ SpeedGraphWindow::SpeedGraphWindow(System::Windows::Forms::Form^ parentForm, int
 	}
 }
 SpeedGraphWindow::~SpeedGraphWindow(System::Void) // деструктор
-
 {
+	coordlist.Clear();
 	this->DestroyHandle();
 }
 
@@ -131,8 +128,6 @@ System::Void SpeedGraphWindow::Render(System::Void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if (!IsStopped) {
 		time++;
-		float minspead = 0.4, maxspead = 2.0;
-		//float y = (speed - minspead) / (maxspead - minspead);
 		float y = speed - shift;
 		coordlist.Update(y, time);
 

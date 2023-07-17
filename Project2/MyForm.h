@@ -2,8 +2,6 @@
 #include "RegulatorWindow.h"
 #include "SpeedGraphWindow.h"
 
-using namespace std;
-
 namespace Project2 {
 
 	using namespace System;
@@ -18,7 +16,6 @@ namespace Project2 {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-	private: RegulatorWindow^ RegulatorWindow1;
 	private: System::Windows::Forms::Label^ label16;
 	private: System::Windows::Forms::Label^ label17;
 	private: System::Windows::Forms::Label^ label18;
@@ -40,31 +37,6 @@ namespace Project2 {
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::Label^ label28;
 	private: System::Windows::Forms::Label^ label4;
-
-	private: SpeedGraphWindow^ SpeedGraphWindow1;
-
-	public:
-		MyForm(void)
-		{
-			InitializeComponent();
-			RegulatorWindow1 = gcnew RegulatorWindow(this, 480, 480, 40, 32);
-			SpeedGraphWindow1 = gcnew SpeedGraphWindow(this, 420, 200, 600, 350);
-			//
-			//TODO: добавьте код конструктора
-			//
-		}
-
-	protected:
-		/// <summary>
-		/// Освободить все используемые ресурсы.
-		/// </summary>
-		~MyForm()
-		{
-			if (components)
-			{
-				delete components;
-			}
-		}
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::HScrollBar^ hScrollBar1;
 	private: System::Windows::Forms::HScrollBar^ hScrollBar2;
@@ -82,14 +54,32 @@ namespace Project2 {
 	private: System::Windows::Forms::Label^ label12;
 	private: System::ComponentModel::IContainer^ components;
 
-	protected:
+	private: RegulatorWindow^ RegulatorWindow1;
+	private: SpeedGraphWindow^ SpeedGraphWindow1;
 
+	public:
+		MyForm(void)
+		{
+			InitializeComponent();
+			RegulatorWindow1 = gcnew RegulatorWindow(this, 480, 480, 40, 32);
+			SpeedGraphWindow1 = gcnew SpeedGraphWindow(this, 420, 200, 600, 350);
+		}
+	protected:
+		/// <summary>
+		/// Освободить все используемые ресурсы.
+		/// </summary>
+		~MyForm()
+		{
+			if (components)
+			{
+				delete components;
+			}
+		}
+	protected:
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
 		/// </summary>
-
-
 #pragma region Windows Form Designer generated code
 		/// <summary>
 		/// Требуемый метод для поддержки конструктора — не изменяйте 
@@ -402,11 +392,21 @@ namespace Project2 {
 #pragma endregion
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
+	private: System::Void hScrollBar1_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
+		this->RegulatorWindow1->yaw = e->NewValue;
+	}
+	private: System::Void hScrollBar2_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
+		this->RegulatorWindow1->pitch = e->NewValue;
+	}
+	private: System::Void hScrollBar3_Scroll_1(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
+		this->RegulatorWindow1->distance = int(e->NewValue) * 0.05;
+	}
+
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 		RegulatorWindow1->time = SpeedGraphWindow1->time * 0.01;
 		RegulatorWindow1->Render();
 		if (RegulatorWindow1->IsStopped) SpeedGraphWindow1->IsStopped = TRUE;
-		SpeedGraphWindow1->speed = RegulatorWindow1->speed;
+		SpeedGraphWindow1->speed = RegulatorWindow1->AngVel;
 		SpeedGraphWindow1->Render();
 
 		label18->Text = Convert::ToString(SpeedGraphWindow1->speed);
@@ -417,37 +417,29 @@ namespace Project2 {
 		}
 
 	}
-	private: System::Void hScrollBar1_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-		this->RegulatorWindow1->yaw = e->NewValue;
-	}
-	private: System::Void hScrollBar2_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-		this->RegulatorWindow1->pitch = e->NewValue;
-	}
-	private: System::Void hScrollBar3_Scroll_1(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-		this->RegulatorWindow1->distance = int(e->NewValue) * 0.05;
-	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		RegulatorWindow1->fi0 = Convert::ToDouble(this->textBox1->Text);
-		RegulatorWindow1->mu0 = Convert::ToDouble(this->textBox2->Text);
-		RegulatorWindow1->mu0der = Convert::ToDouble(this->textBox3->Text);
+		SpeedGraphWindow1->IsStopped = FALSE;
+		RegulatorWindow1->IsStopped = FALSE;
+
+		RegulatorWindow1->StableAngVel = 4;
+		SpeedGraphWindow1->shift = RegulatorWindow1->StableAngVel;
+		SpeedGraphWindow1->time = 0;
+		SpeedGraphWindow1->coordlist.Clear();
+		RegulatorWindow1->angle = 0;
+
+		RegulatorWindow1->Fi0 = Convert::ToDouble(this->textBox1->Text);
+		RegulatorWindow1->AngVel = RegulatorWindow1->StableAngVel * RegulatorWindow1->Fi0;
+		//RegulatorWindow1->AngVel = RegulatorWindow1->StableAngVel * (1 + RegulatorWindow1->Fi0);
+		RegulatorWindow1->Mu0 = Convert::ToDouble(this->textBox2->Text);
+		RegulatorWindow1->MuPrime0 = Convert::ToDouble(this->textBox3->Text);
 		RegulatorWindow1->Tr_sqr = Convert::ToDouble(this->textBox6->Text);
 		RegulatorWindow1->Tk = Convert::ToDouble(this->textBox5->Text);
 		RegulatorWindow1->gamma = Convert::ToDouble(this->textBox4->Text);
 
-		SpeedGraphWindow1->shift = RegulatorWindow1->fi0 / RegulatorWindow1->gamma  * 10;
-
 		label16->Text = Convert::ToString( 5 - SpeedGraphWindow1->shift);
 		label20->Text = Convert::ToString(-5 - SpeedGraphWindow1->shift);
-
-		SpeedGraphWindow1->IsStopped = FALSE;
-		RegulatorWindow1->IsStopped = FALSE;
 		label17->Text = "0";
 		label22->Text = "10";
-		//Close();
-		RegulatorWindow1->speed = 1;
-		SpeedGraphWindow1->time = 0;
-		SpeedGraphWindow1->coordlist.Clear();
-		RegulatorWindow1->angle = 0;
 	}
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 		//SpeedGraphWindow1->IsStopped = TRUE;
@@ -456,46 +448,46 @@ namespace Project2 {
 		RegulatorWindow1->IsStopped = !RegulatorWindow1->IsStopped;
 	}
 
-private: System::Void label21_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
-	label4->Visible = FALSE;
-}
-	private: System::Void label21_MouseHover(System::Object^ sender, System::EventArgs^ e) {
-		label4->Text = "Start angle";
-		label4->Left = label21->Left - 10;
-		label4->Top = label21->Top - 12;
+	private: System::Void label21_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
+		label4->Visible = FALSE;
+	}
+		private: System::Void label21_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+			label4->Text = "Start angle";
+			label4->Left = label21->Left - 10;
+			label4->Top = label21->Top - 12;
+			label4->Visible = TRUE;
+		}
+	private: System::Void label23_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Start shift of flap";
+		label4->Left = label23->Left - 10;
+		label4->Top = label23->Top - 12;
 		label4->Visible = TRUE;
 	}
-private: System::Void label23_MouseHover(System::Object^ sender, System::EventArgs^ e) {
-	label4->Text = "Start shift of flap";
-	label4->Left = label23->Left - 10;
-	label4->Top = label23->Top - 12;
-	label4->Visible = TRUE;
-}
-private: System::Void label24_MouseHover(System::Object^ sender, System::EventArgs^ e) {
-	label4->Text = "Start speed of flap";
-	label4->Left = label24->Left - 10;
-	label4->Top = label24->Top - 12;
-	label4->Visible = TRUE;
-}
-private: System::Void label27_MouseHover(System::Object^ sender, System::EventArgs^ e) {
-	label4->Text = "Innertial properties of regulator";
-	label4->Left = label27->Left - 10;
-	label4->Top = label27->Top - 12;
-	label4->Visible = TRUE;
-}
-private: System::Void label26_MouseHover(System::Object^ sender, System::EventArgs^ e) {
-	label4->Text = "Damping properties of regulator";
-	label4->Left = label26->Left - 10;
-	label4->Top = label26->Top - 12;
-	label4->Visible = TRUE;
-}
-private: System::Void label25_MouseHover(System::Object^ sender, System::EventArgs^ e) {
-	label4->Text = "Irregularity of regulator";
-	label4->Left = label25->Left - 10;
-	label4->Top = label25->Top - 12;
-	label4->Visible = TRUE;
-}
-};
+	private: System::Void label24_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Start speed of flap";
+		label4->Left = label24->Left - 10;
+		label4->Top = label24->Top - 12;
+		label4->Visible = TRUE;
+	}
+	private: System::Void label27_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Innertial properties of regulator";
+		label4->Left = label27->Left - 10;
+		label4->Top = label27->Top - 12;
+		label4->Visible = TRUE;
+	}
+	private: System::Void label26_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Damping properties of regulator";
+		label4->Left = label26->Left - 10;
+		label4->Top = label26->Top - 12;
+		label4->Visible = TRUE;
+	}
+	private: System::Void label25_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Irregularity of regulator";
+		label4->Left = label25->Left - 10;
+		label4->Top = label25->Top - 12;
+		label4->Visible = TRUE;
+	}
+	};
 }
 
 
