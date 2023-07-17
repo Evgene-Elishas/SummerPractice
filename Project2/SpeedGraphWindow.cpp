@@ -56,7 +56,7 @@ bool SpeedGraphWindow::InitGL(GLvoid)// инициализация SpeedGraphWindow
 	glClearDepth(1.0f);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, 1.0, -5.0, 5.0);
+	gluOrtho2D(0.0, 1.0, -15.0, 15.0);
 	glMatrixMode(GL_MODELVIEW);
 
 	return TRUE;
@@ -133,7 +133,7 @@ System::Void SpeedGraphWindow::Render(System::Void)
 		time++;
 		float minspead = 0.4, maxspead = 2.0;
 		//float y = (speed - minspead) / (maxspead - minspead);
-		float y = speed - shift * 10;
+		float y = speed - shift;
 		coordlist.Update(y, time);
 
 	}

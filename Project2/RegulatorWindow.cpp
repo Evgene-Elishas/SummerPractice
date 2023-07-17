@@ -207,10 +207,26 @@ System::Void RegulatorWindow::Render(System::Void)
 		//float mu = omega;
 		//mu *= 0.1;
 		float h = h0 - mu;
-		teta = acos((h * h + leng1 * leng1 - leng2 * leng2) / (2 * h * leng1)) - tetazero1;
-		teta2 = acos((h * h - leng1 * leng1 + leng2 * leng2) / (2 * h * leng2)) - tetazero2;
-		speed = 10 * mu;
-		angle += speed * 0.01 * 360;
+
+		float Temph = h0 - fi0 / gamma;
+		float tempcos = (h * h + leng1 * leng1 - leng2 * leng2) / (2 * h * leng1);
+		float tempcos2 = (Temph * Temph + leng1 * leng1 - leng2 * leng2) / (2 * Temph * leng1);
+
+		if (tempcos > 1 || tempcos < -1 || tempcos2 > 1 || tempcos2 < -1) {
+			IsStopped = TRUE;
+			MessageBox::Show("Impossible parameters");
+
+		}
+		else {
+			teta = acos((h * h + leng1 * leng1 - leng2 * leng2) / (2 * h * leng1)) - tetazero1;
+			teta2 = acos((h * h - leng1 * leng1 + leng2 * leng2) / (2 * h * leng2)) - tetazero2;
+
+			float teta_star = acos((Temph * Temph + leng1 * leng1 - leng2 * leng2) / (2 * Temph * leng1)) - tetazero1;
+			float delta_teta = teta - teta_star;
+			angle += speed * 0.01 * 360;
+			speed -= 0.1 * delta_teta;
+		}
+		//speed = 10 * mu;
 	}
 	//teta = mu;
 	
