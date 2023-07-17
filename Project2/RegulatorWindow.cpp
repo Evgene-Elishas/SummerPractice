@@ -30,9 +30,6 @@ float leng1 = glm::length(p1f - p2f), h1 = p1f.y - p2f.y, tetazero1 = acosf(h1 /
 bool RegulatorWindow::InitGL(GLvoid)// инициализация RegulatorWindow
 {
 	log_file.open("log.txt");
-	
-	log_file << leng1 << " " << h1 << " " << glm::degrees(tetazero1) << endl << leng2 << " " << h2 << " " << glm::degrees(tetazero2) << endl << h0 << endl;
-	log_file.flush();
 
 	WheelTex.Load("WheelWagon.jpg");
 	RegulatorTex.Load("RegulatorTex.png");
@@ -103,7 +100,6 @@ GLvoid RegulatorWindow::ReSizeGLScene(GLsizei width, GLsizei height)// Resize an
 	Width = width; Height = height;
 	glViewport(0, 0, width, height);
 }
-
 // функция, задающая формат пикселя
 GLint RegulatorWindow::MySetPixelFormat(HDC hdc)
 {
@@ -144,8 +140,6 @@ GLint RegulatorWindow::MySetPixelFormat(HDC hdc)
 
 	return 1;
 }
-
-// конструктор
 RegulatorWindow::RegulatorWindow(System::Windows::Forms::Form^ parentForm, int iWidth, int iHeight, int iPosX, int iPosY)
 {
 	Width = iWidth; Height = iHeight;
@@ -162,78 +156,69 @@ RegulatorWindow::RegulatorWindow(System::Windows::Forms::Form^ parentForm, int i
 		InitGL();
 	}
 }
-
 RegulatorWindow::~RegulatorWindow(System::Void) // деструктор
-
 {
 	this->DestroyHandle();
 }
 
-void SetProjectionMatrix(Camera& cam) {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(cam.Perspective, (GLfloat)Width/Height, 0.15, 1000.0);
-	glm::vec3 dest = cam.Position + cam.Front;
-	gluLookAt(cam.Position.x, cam.Position.y, cam.Position.z, dest.x, dest.y, dest.z, cam.Up.x, cam.Up.y, cam.Up.z);
-	glMatrixMode(GL_MODELVIEW);
+System::Void RegulatorWindow::BaseAlgorithm(System::Void)
+{
+	if (Tk * Tk - 4 * gamma * Tr_sqr < 0) {
+		float beta = -Tk / (2 * Tr_sqr);
+		float omega = sqrt(-Tk * Tk + 4 * gamma * Tr_sqr) / (2 * Tr_sqr);
+		float c1 = Mu0 - Fi0 / gamma;
+		float c2 = MuPrime0 / omega - beta / omega * c1;
+		Mu = exp(beta * time) * (c1 * cos(omega * time) + c2 * sin(omega * time)) + Fi0 / gamma;
+	}
+	else {
+		float beta = -Tk / (2 * Tr_sqr);
+		float omega = sqrt(Tk * Tk - 4 * gamma * Tr_sqr) / (2 * Tr_sqr);
+		float lambda1 = beta + omega, lambda2 = beta - omega;
+		float c1 = ((Mu0 - Fi0 / gamma) * lambda2 - MuPrime0) * -0.5 / omega; // ((mu0 - fi0 / gamma)*lambda2 - mu0der) / (lambda2 - lambda1)
+		float c2 = (MuPrime0 - (Mu0 - Fi0 / gamma) * lambda1) * -0.5 / omega; // (mu0der - (mu0 - fi0 / gamma)*lambda1) / (lambda2 - lambda1)
+		Mu = c1 * exp(lambda1 * time) + c2 * exp(lambda2 * time) + Fi0 / gamma;
+	}
+	float h = h0 - Mu;
+
+	float Temph = h0 - Fi0 / gamma;
+	float tempcos = (h * h + leng1 * leng1 - leng2 * leng2) / (2 * h * leng1);
+	float tempcos2 = (Temph * Temph + leng1 * leng1 - leng2 * leng2) / (2 * Temph * leng1);
+
+	if (tempcos > 1 || tempcos < -1 || tempcos2 > 1 || tempcos2 < -1) {
+		IsStopped = TRUE;
+		MessageBox::Show("Impossible parameters");
+	}
+	else {
+		teta = acos((h * h + leng1 * leng1 - leng2 * leng2) / (2 * h * leng1)) - tetazero1;
+		teta2 = acos((h * h - leng1 * leng1 + leng2 * leng2) / (2 * h * leng2)) - tetazero2;
+
+		float teta_star = acos((Temph * Temph + leng1 * leng1 - leng2 * leng2) / (2 * Temph * leng1)) - tetazero1;
+		float delta_teta = teta - teta_star;
+		angle += AngVel * 0.01 * 360;
+		AngVel += - 0.08654 * delta_teta / Tr_sqr;
+	}
 }
+
 
 
 // функция рисования
 System::Void RegulatorWindow::Render(System::Void)
 {
+	if (!IsStopped) BaseAlgorithm();
+
 	wglMakeCurrent(m_hDC, m_hglrc);
-	//fi = fi + this->speed * 0.01 * 360;
-	//float teta = this->angle;
-	static float mu, teta, teta2;
-
-	if (!IsStopped) {
-		if (Tk * Tk - 4 * gamma * Tr_sqr < 0) {
-			float beta = -Tk / (2 * Tr_sqr);
-			float omega = sqrt(-Tk * Tk + 4 * gamma * Tr_sqr) / (2 * Tr_sqr);
-			float c1 = mu0 - fi0 / gamma;
-			float c2 = mu0der / omega - beta / omega * c1;
-			mu = exp(beta * time) * (c1 * cos(omega * time) + c2 * sin(omega * time)) + fi0 / gamma;
-		}
-		else {
-			float beta = -Tk / (2 * Tr_sqr);
-			float omega = sqrt(Tk * Tk - 4 * gamma * Tr_sqr) / (2 * Tr_sqr);
-			float lambda1 = beta + omega, lambda2 = beta - omega;
-			float c1 = ((mu0 - fi0 / gamma) * lambda2 - mu0der) * -0.5 / omega; // ((mu0 - fi0 / gamma)*lambda2 - mu0der) / (lambda2 - lambda1)
-			float c2 = (mu0der - (mu0 - fi0 / gamma) * lambda1) * -0.5 / omega; // (mu0der - (mu0 - fi0 / gamma)*lambda1) / (lambda2 - lambda1)
-			mu = c1 * exp(lambda1 * time) + c2 * exp(lambda2 * time) + fi0 / gamma;
-		}
-
-		//float mu = omega;
-		//mu *= 0.1;
-		float h = h0 - mu;
-		teta = acos((h * h + leng1 * leng1 - leng2 * leng2) / (2 * h * leng1)) - tetazero1;
-		teta2 = acos((h * h - leng1 * leng1 + leng2 * leng2) / (2 * h * leng2)) - tetazero2;
-		speed = 10 * mu;
-		angle += speed * 0.01 * 360;
-	}
-	//teta = mu;
-	
-
-	//float teta2 = teta * (tetazero2/ tetazero1);
-	//float deltah = (h1 - leng1 * cos(glm::radians(teta) + tetazero1)) + (h2 - leng2 * cos(glm::radians(teta2) + tetazero2));
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	camera.Yaw = -this->yaw - 90;
-	camera.Pitch = -this->pitch;
-	camera.Position = normalize(camera.Position) * this->distance;
-	camera.updateCameraVectors();
-	SetProjectionMatrix(camera);
+	camera.Update(yaw, pitch, distance, Width, Height);
 
 	glPushMatrix();
 	
 	WheelTex.Bind();	
 	
 	glPushMatrix();
-	glTranslatef(-0.093914, -0.010673, 0);
+	glTranslatef(0, -0.799102, 0);
 	glRotatef(angle, 1, 0, 0);
-	glTranslatef(0.093914, 0.010673, 0);
+	glTranslatef(0, 0.799102, 0);
 	Wheel.Draw();
 	glPopMatrix();
 	
@@ -247,7 +232,7 @@ System::Void RegulatorWindow::Render(System::Void)
 	Shaft.Draw();
 
 	glPushMatrix();
-	glTranslatef(0, -mu, 0);
+	glTranslatef(0, -Mu, 0);
 	Shutter.Draw();
 	glPopMatrix();
 
@@ -262,20 +247,20 @@ System::Void RegulatorWindow::Render(System::Void)
 
 	glPushMatrix();
 	glTranslatef(-0.24089, -0.135087, 0.0);
-	glRotatef(glm::degrees(/*teta) * cosf(teta)*/atan(mu/ 0.24089))*1.1, 0, 0, 1);
+	glRotatef(glm::degrees(/*teta) * cosf(teta)*/atan(Mu/ 0.24089))*1.1, 0, 0, 1);
 	glTranslatef(0.24089, 0.135087, 0.0);
 	RegLever.Draw();
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0, mu, 0);
+	glTranslatef(0, Mu, 0);
 	RegLeverHolder.Draw();
 	glPopMatrix();
 
 	glRotatef(angle, 0, 1, 0);
 
 	glPushMatrix();
-	glTranslatef(0, mu, 0);
+	glTranslatef(0, Mu, 0);
 	RegClutch.Draw();
 	glPopMatrix();
 
@@ -290,7 +275,7 @@ System::Void RegulatorWindow::Render(System::Void)
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(p3.x, p3.y + mu, p3.z);
+	glTranslatef(p3.x, p3.y + Mu, p3.z);
 	glRotatef(glm::degrees(teta2), 0, 0, 1);
 	glTranslatef(-p3.x, -p3.y, p3.z);
 	RegHingeLeftDown.Draw();
@@ -305,7 +290,7 @@ System::Void RegulatorWindow::Render(System::Void)
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(-p3.x, p3.y + mu, p3.z);
+	glTranslatef(-p3.x, p3.y + Mu, p3.z);
 	glRotatef(glm::degrees(teta2), 0, 0, -1);
 	glTranslatef(p3.x, -p3.y, p3.z);
 	RegHingeRightDown.Draw();

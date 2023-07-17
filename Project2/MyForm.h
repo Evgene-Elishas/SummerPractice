@@ -1,11 +1,6 @@
 #pragma once
 #include "RegulatorWindow.h"
 #include "SpeedGraphWindow.h"
-#include <string>
-//#include <cstdio>
-//#include <msclr/marshal.h>
-//#pragma warning(disable: 4996)
-using namespace std;
 
 namespace Project2 {
 
@@ -21,7 +16,6 @@ namespace Project2 {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
-	private: RegulatorWindow^ RegulatorWindow1;
 	private: System::Windows::Forms::Label^ label16;
 	private: System::Windows::Forms::Label^ label17;
 	private: System::Windows::Forms::Label^ label18;
@@ -42,7 +36,25 @@ namespace Project2 {
 	private: System::Windows::Forms::TextBox^ textBox6;
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::Label^ label28;
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	private: System::Windows::Forms::HScrollBar^ hScrollBar1;
+	private: System::Windows::Forms::HScrollBar^ hScrollBar2;
+	private: System::Windows::Forms::HScrollBar^ hScrollBar3;
+	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::Timer^ timer1;
+	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Label^ label6;
+	private: System::Windows::Forms::Label^ label7;
+	private: System::Windows::Forms::Label^ label9;
+	private: System::Windows::Forms::Label^ label10;
+	private: System::Windows::Forms::Label^ label11;
+	private: System::Windows::Forms::Label^ label12;
+	private: System::ComponentModel::IContainer^ components;
 
+	private: RegulatorWindow^ RegulatorWindow1;
 	private: SpeedGraphWindow^ SpeedGraphWindow1;
 
 	public:
@@ -51,11 +63,7 @@ namespace Project2 {
 			InitializeComponent();
 			RegulatorWindow1 = gcnew RegulatorWindow(this, 480, 480, 40, 32);
 			SpeedGraphWindow1 = gcnew SpeedGraphWindow(this, 420, 200, 600, 350);
-			//
-			//TODO: добавьте код конструктора
-			//
 		}
-
 	protected:
 		/// <summary>
 		/// Освободить все используемые ресурсы.
@@ -67,59 +75,11 @@ namespace Project2 {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::PictureBox^ pictureBox1;
-	private: System::Windows::Forms::HScrollBar^ hScrollBar1;
-
-
-
-
-
-	private: System::Windows::Forms::HScrollBar^ hScrollBar2;
-	private: System::Windows::Forms::HScrollBar^ hScrollBar3;
-	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::Label^ label2;
-	private: System::Windows::Forms::Label^ label3;
-	private: System::Windows::Forms::Timer^ timer1;
-
-
-
-
-
-
-
-
-
-
-
-	private: System::Windows::Forms::Button^ button1;
-
-
-
-
-	private: System::Windows::Forms::Label^ label6;
-	private: System::Windows::Forms::Label^ label7;
-
-	private: System::Windows::Forms::Label^ label9;
-	private: System::Windows::Forms::Label^ label10;
-	private: System::Windows::Forms::Label^ label11;
-	private: System::Windows::Forms::Label^ label12;
-
-
-
-
-
-
-
-	private: System::ComponentModel::IContainer^ components;
-
 	protected:
-
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
 		/// </summary>
-
-
 #pragma region Windows Form Designer generated code
 		/// <summary>
 		/// Требуемый метод для поддержки конструктора — не изменяйте 
@@ -164,6 +124,7 @@ namespace Project2 {
 			this->textBox6 = (gcnew System::Windows::Forms::TextBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->label28 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -295,7 +256,6 @@ namespace Project2 {
 			// 
 			resources->ApplyResources(this->textBox1, L"textBox1");
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->TextChanged += gcnew System::EventHandler(this, &MyForm::textBox1_TextChanged);
 			// 
 			// textBox2
 			// 
@@ -316,31 +276,43 @@ namespace Project2 {
 			// 
 			resources->ApplyResources(this->label21, L"label21");
 			this->label21->Name = L"label21";
+			this->label21->MouseLeave += gcnew System::EventHandler(this, &MyForm::label21_MouseLeave);
+			this->label21->MouseHover += gcnew System::EventHandler(this, &MyForm::label21_MouseHover);
 			// 
 			// label23
 			// 
 			resources->ApplyResources(this->label23, L"label23");
 			this->label23->Name = L"label23";
+			this->label23->MouseLeave += gcnew System::EventHandler(this, &MyForm::label21_MouseLeave);
+			this->label23->MouseHover += gcnew System::EventHandler(this, &MyForm::label23_MouseHover);
 			// 
 			// label24
 			// 
 			resources->ApplyResources(this->label24, L"label24");
 			this->label24->Name = L"label24";
+			this->label24->MouseLeave += gcnew System::EventHandler(this, &MyForm::label21_MouseLeave);
+			this->label24->MouseHover += gcnew System::EventHandler(this, &MyForm::label24_MouseHover);
 			// 
 			// label25
 			// 
 			resources->ApplyResources(this->label25, L"label25");
 			this->label25->Name = L"label25";
+			this->label25->MouseLeave += gcnew System::EventHandler(this, &MyForm::label21_MouseLeave);
+			this->label25->MouseHover += gcnew System::EventHandler(this, &MyForm::label25_MouseHover);
 			// 
 			// label26
 			// 
 			resources->ApplyResources(this->label26, L"label26");
 			this->label26->Name = L"label26";
+			this->label26->MouseLeave += gcnew System::EventHandler(this, &MyForm::label21_MouseLeave);
+			this->label26->MouseHover += gcnew System::EventHandler(this, &MyForm::label26_MouseHover);
 			// 
 			// label27
 			// 
 			resources->ApplyResources(this->label27, L"label27");
 			this->label27->Name = L"label27";
+			this->label27->MouseLeave += gcnew System::EventHandler(this, &MyForm::label21_MouseLeave);
+			this->label27->MouseHover += gcnew System::EventHandler(this, &MyForm::label27_MouseHover);
 			// 
 			// textBox5
 			// 
@@ -364,10 +336,16 @@ namespace Project2 {
 			resources->ApplyResources(this->label28, L"label28");
 			this->label28->Name = L"label28";
 			// 
+			// label4
+			// 
+			resources->ApplyResources(this->label4, L"label4");
+			this->label4->Name = L"label4";
+			// 
 			// MyForm
 			// 
 			resources->ApplyResources(this, L"$this");
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label28);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->label26);
@@ -414,66 +392,103 @@ namespace Project2 {
 #pragma endregion
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
-private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-	RegulatorWindow1->time = SpeedGraphWindow1->time * 0.01;
-	RegulatorWindow1->Render();
-	SpeedGraphWindow1->speed = RegulatorWindow1->speed;
-	SpeedGraphWindow1->Render();
-
-	label18->Text = Convert::ToString(SpeedGraphWindow1->speed);//gcnew System::String(to_string(SpeedGraphWindow1->speed).c_str());
-	int time = SpeedGraphWindow1->time;
-	if (time > MAX_COORD_COUNT) {
-		//string s1(to_string(time * 0.01 - 10.0)), s2(to_string(time * 0.01));
-		//s1.erase(s1.length() - 4);
-		//s2.erase(s2.length() - 4);
-		//System::String^ str1 = gcnew System::String(s1.c_str());
-		//System::String^ str2 = gcnew System::String(s2.c_str());
-		label17->Text = Convert::ToString(time * 0.01 - 10.0);//str1;
-		label22->Text = Convert::ToString(time * 0.01);// str2;
+	private: System::Void hScrollBar1_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
+		this->RegulatorWindow1->yaw = e->NewValue;
+	}
+	private: System::Void hScrollBar2_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
+		this->RegulatorWindow1->pitch = e->NewValue;
+	}
+	private: System::Void hScrollBar3_Scroll_1(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
+		this->RegulatorWindow1->distance = int(e->NewValue) * 0.05;
 	}
 
-}
-private: System::Void hScrollBar1_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	this->RegulatorWindow1->yaw = e->NewValue;
-}
-private: System::Void hScrollBar2_Scroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	this->RegulatorWindow1->pitch = e->NewValue;
-}
-private: System::Void hScrollBar3_Scroll_1(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e) {
-	this->RegulatorWindow1->distance = int(e->NewValue) * 0.05;
-}
-private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-	RegulatorWindow1->fi0 = Convert::ToDouble(this->textBox1->Text);
-	RegulatorWindow1->mu0 = Convert::ToDouble(this->textBox2->Text);
-	RegulatorWindow1->mu0der = Convert::ToDouble(this->textBox3->Text);
-	RegulatorWindow1->Tr_sqr = Convert::ToDouble(this->textBox6->Text);
-	RegulatorWindow1->Tk = Convert::ToDouble(this->textBox5->Text);
-	RegulatorWindow1->gamma = Convert::ToDouble(this->textBox4->Text);
+	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+		RegulatorWindow1->time = SpeedGraphWindow1->time * 0.01;
+		RegulatorWindow1->Render();
+		if (RegulatorWindow1->IsStopped) SpeedGraphWindow1->IsStopped = TRUE;
+		SpeedGraphWindow1->speed = RegulatorWindow1->AngVel;
+		SpeedGraphWindow1->Render();
 
-	SpeedGraphWindow1->shift = RegulatorWindow1->fi0 / RegulatorWindow1->gamma;
+		label18->Text = Convert::ToString(SpeedGraphWindow1->speed);
+		int time = SpeedGraphWindow1->time;
+		if (time > MAX_COORD_COUNT) {
+			label17->Text = Convert::ToString(time * 0.01 - 10.0);
+			label22->Text = Convert::ToString(time * 0.01);
+		}
 
-	label16->Text = Convert::ToString((5 - SpeedGraphWindow1->shift) * 2 * M_PI)->Remove(6);
-	label20->Text = Convert::ToString((-5 - SpeedGraphWindow1->shift) * 2 * M_PI)->Remove(6);
+	}
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		SpeedGraphWindow1->IsStopped = FALSE;
+		RegulatorWindow1->IsStopped = FALSE;
 
-	SpeedGraphWindow1->IsStopped = FALSE;
-	RegulatorWindow1->IsStopped = FALSE;
-	label17->Text = "0";
-	label22->Text = "10";
-	//Close();
-	SpeedGraphWindow1->time = 0;
-	SpeedGraphWindow1->coordlist.Clear();
-	RegulatorWindow1->angle = 0;
-}
-private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-	//SpeedGraphWindow1->IsStopped = TRUE;
-	//RegulatorWindow1->IsStopped = TRUE;
-	SpeedGraphWindow1->IsStopped = !SpeedGraphWindow1->IsStopped;
-	RegulatorWindow1->IsStopped = !RegulatorWindow1->IsStopped;
-}
-private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	double temp = Convert::ToDouble(this->textBox1->Text);
-	//if
+		RegulatorWindow1->StableAngVel = 4;
+		SpeedGraphWindow1->shift = RegulatorWindow1->StableAngVel;
+		SpeedGraphWindow1->time = 0;
+		SpeedGraphWindow1->coordlist.Clear();
+		RegulatorWindow1->angle = 0;
 
+		RegulatorWindow1->Fi0 = Convert::ToDouble(this->textBox1->Text);
+		RegulatorWindow1->AngVel = RegulatorWindow1->StableAngVel * RegulatorWindow1->Fi0;
+		//RegulatorWindow1->AngVel = RegulatorWindow1->StableAngVel * (1 + RegulatorWindow1->Fi0);
+		RegulatorWindow1->Mu0 = Convert::ToDouble(this->textBox2->Text);
+		RegulatorWindow1->MuPrime0 = Convert::ToDouble(this->textBox3->Text);
+		RegulatorWindow1->Tr_sqr = Convert::ToDouble(this->textBox6->Text);
+		RegulatorWindow1->Tk = Convert::ToDouble(this->textBox5->Text);
+		RegulatorWindow1->gamma = Convert::ToDouble(this->textBox4->Text);
+
+		label16->Text = Convert::ToString( 5 - SpeedGraphWindow1->shift);
+		label20->Text = Convert::ToString(-5 - SpeedGraphWindow1->shift);
+		label17->Text = "0";
+		label22->Text = "10";
+	}
+	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+		//SpeedGraphWindow1->IsStopped = TRUE;
+		//RegulatorWindow1->IsStopped = TRUE;
+		SpeedGraphWindow1->IsStopped = !SpeedGraphWindow1->IsStopped;
+		RegulatorWindow1->IsStopped = !RegulatorWindow1->IsStopped;
+	}
+
+	private: System::Void label21_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
+		label4->Visible = FALSE;
+	}
+		private: System::Void label21_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+			label4->Text = "Start angle";
+			label4->Left = label21->Left - 10;
+			label4->Top = label21->Top - 12;
+			label4->Visible = TRUE;
+		}
+	private: System::Void label23_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Start shift of flap";
+		label4->Left = label23->Left - 10;
+		label4->Top = label23->Top - 12;
+		label4->Visible = TRUE;
+	}
+	private: System::Void label24_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Start speed of flap";
+		label4->Left = label24->Left - 10;
+		label4->Top = label24->Top - 12;
+		label4->Visible = TRUE;
+	}
+	private: System::Void label27_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Innertial properties of regulator";
+		label4->Left = label27->Left - 10;
+		label4->Top = label27->Top - 12;
+		label4->Visible = TRUE;
+	}
+	private: System::Void label26_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Damping properties of regulator";
+		label4->Left = label26->Left - 10;
+		label4->Top = label26->Top - 12;
+		label4->Visible = TRUE;
+	}
+	private: System::Void label25_MouseHover(System::Object^ sender, System::EventArgs^ e) {
+		label4->Text = "Irregularity of regulator";
+		label4->Left = label25->Left - 10;
+		label4->Top = label25->Top - 12;
+		label4->Visible = TRUE;
+	}
+	};
 }
-};
-}
+
+
+////////////////////

@@ -12,7 +12,6 @@ struct node {
 	node* next;
 	node(float x, float y) :info(x, y), next(NULL) {}
 };
-
 ref class CoordList {
 	node* Head = NULL, * Tail = NULL;
 public:
